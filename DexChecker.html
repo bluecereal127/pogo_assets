@@ -200,7 +200,7 @@
         }
         
         .pokemon-card.shiny {
-            background: linear-gradient(135deg, #fff 0%, #fff 50%, #fffde7 100%);
+            background: linear-gradient(135deg, #000 0%, #ffd700 50%, #ffd700 100%);
         }
         
         .pokemon-card.shadow {
@@ -219,15 +219,6 @@
             padding: 3px 6px;
             border-radius: 4px;
             color: white;
-        }
-        
-        .shiny-badge {
-            background-color: #ffd700;
-            color: #333;
-        }
-        
-        .shadow-badge {
-            background-color: #673ab7;
         }
         
         .lucky-badge {
@@ -687,6 +678,152 @@
     background-color: #e0e0e0;
 }
 
+    /* Shadow Pokemon - Darker purple aura with smoke effect */
+    .pokemon-card.shadow {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    }
+    
+    .pokemon-card.shadow::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        background: 
+            radial-gradient(circle at center, rgba(91, 15, 153, 0.6) 0%, transparent 70%),
+            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(91, 15, 153, 0.4)" d="M30,50 Q50,30 70,50 T110,50 Q130,30 150,50 T190,50 Q210,30 230,50 T270,50 Q290,30 310,50 T350,50 Q370,30 390,50 T430,50 Q450,30 470,50 T510,50 Q530,30 550,50 T590,50 Q610,30 630,50 T670,50 Q690,30 710,50 T750,50 Q770,30 790,50 T830,50 Q850,30 870,50 T910,50 Q930,30 950,50 T990,50 Q1010,30 1030,50" transform="translate(-30,-50)"/></svg>');
+        background-size: 200px 200px;
+        z-index: 0;
+        animation: 
+            pulseAura 3s infinite ease-in-out alternate,
+            floatSmoke 25s infinite linear;
+        filter: blur(2px);
+    }
+    
+    /* Shiny Pokemon - Fixed sparkle background with gradient */
+    .pokemon-card.shiny {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #fff 0%, #fff 50%, #fffde7 100%);
+    }
+    
+    .pokemon-card.shiny::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+            radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+            radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+            radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+            radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
+            radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.9) 0%, transparent 25%);
+        z-index: 0;
+        animation: twinkle 2s infinite;
+    }
+    
+    /* Lucky Pokemon - More dynamic golden clouds */
+    .pokemon-card.lucky {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #fff 0%, #fff 70%, #fff9c4 100%);
+    }
+    
+    .pokemon-card.lucky::before,
+    .pokemon-card.lucky::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        background: 
+            radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.4) 0%, transparent 50%),
+            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(255, 215, 0, 0.3)" d="M30,30 Q50,10 70,30 T110,30 Q130,10 150,30 T190,30 Q210,10 230,30 T270,30 Q290,10 310,30 T350,30 Q370,10 390,30 T430,30 Q450,10 470,30 T510,30 Q530,10 550,30 T590,30 Q610,10 630,30 T670,30 Q690,10 710,30 T750,30 Q770,10 790,30 T830,30 Q850,10 870,30 T910,30 Q930,10 950,30 T990,30 Q1010,10 1030,30" transform="translate(-30,-30)"/></svg>');
+        background-size: 200px 200px;
+        z-index: 0;
+        animation: floatCloud 20s infinite linear;
+    }
+    
+    .pokemon-card.lucky::after {
+        animation: floatCloudReverse 25s infinite linear;
+        opacity: 0.7;
+        background-position: 100px 100px;
+    }
+    
+    /* Animations */
+    @keyframes pulseAura {
+        0% { opacity: 0.8; transform: scale(0.98); }
+        100% { opacity: 1; transform: scale(1.02); }
+    }
+    
+    @keyframes floatSmoke {
+        0% { background-position: 0 0; }
+        100% { background-position: 200px 200px; }
+    }
+    
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+    }
+    
+    @keyframes floatCloud {
+        0% { 
+            transform: translateX(0) translateY(0);
+            background-position: 0 0;
+        }
+        25% { 
+            transform: translateX(-20px) translateY(-15px);
+            background-position: 50px 50px;
+        }
+        50% { 
+            transform: translateX(0) translateY(-30px);
+            background-position: 100px 100px;
+        }
+        75% { 
+            transform: translateX(20px) translateY(-15px);
+            background-position: 150px 150px;
+        }
+        100% { 
+            transform: translateX(0) translateY(0);
+            background-position: 200px 200px;
+        }
+    }
+    
+    @keyframes floatCloudReverse {
+        0% { 
+            transform: translateX(0) translateY(0);
+            background-position: 200px 200px;
+        }
+        25% { 
+            transform: translateX(15px) translateY(20px);
+            background-position: 150px 150px;
+        }
+        50% { 
+            transform: translateX(30px) translateY(0);
+            background-position: 100px 100px;
+        }
+        75% { 
+            transform: translateX(15px) translateY(-20px);
+            background-position: 50px 50px;
+        }
+        100% { 
+            transform: translateX(0) translateY(0);
+            background-position: 0 0;
+        }
+    }
+    
+    /* Ensure content stays above backgrounds */
+    .pokemon-card > * {
+        position: relative;
+        z-index: 1;
+    }
 </style>
 </head>
 <body>
@@ -720,8 +857,7 @@
                     <option value="shadow">Shadow</option>
                     <option value="lucky">Lucky</option>
                 </select>
-                <div id="stickySearchContainer"><input type="text" id="searchInput" placeholder="Search by name..."></div>
-            </div>
+                <input type="text" id="searchInput" placeholder="Search by name (use , for OR, & for AND)...">            </div>
             
             <div class="filter-radio-group">
                 <input type="radio" id="filterNone" name="specialFilter" value="none" class="filter-radio" checked>
@@ -773,6 +909,28 @@
                 <select id="filterCostume">
                     <option value="">Any Costume</option>
                     <!-- Will be populated dynamically -->
+                </select>
+
+                <select id="filterType">
+                    <option value="">Any Type</option>
+                    <option value="NORMAL">Normal</option>
+                    <option value="FIRE">Fire</option>
+                    <option value="WATER">Water</option>
+                    <option value="GRASS">Grass</option>
+                    <option value="ELECTRIC">Electric</option>
+                    <option value="ICE">Ice</option>
+                    <option value="FIGHTING">Fighting</option>
+                    <option value="POISON">Poison</option>
+                    <option value="GROUND">Ground</option>
+                    <option value="FLYING">Flying</option>
+                    <option value="PSYCHIC">Psychic</option>
+                    <option value="BUG">Bug</option>
+                    <option value="ROCK">Rock</option>
+                    <option value="GHOST">Ghost</option>
+                    <option value="DRAGON">Dragon</option>
+                    <option value="DARK">Dark</option>
+                    <option value="STEEL">Steel</option>
+                    <option value="FAIRY">Fairy</option>
                 </select>
             </div>
             
@@ -1070,10 +1228,6 @@ function createPokemonCard(id, pokemon) {
     
     // Build card content
     card.innerHTML = `
-        ${isShiny ? '<div class="badge shiny-badge">✨</div>' : ''}
-        ${isShadow ? '<div class="badge shadow-badge">👿</div>' : ''}
-        ${isLucky ? '<div class="badge lucky-badge">🍀</div>' : ''}
-        
         <div class="sprite-container">
             <img src="${spriteUrl}" alt="${pokemon.mon_name}" class="sprite" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}.icon.png'">
         </div>
@@ -1301,6 +1455,7 @@ function showPokemonDetails(id, pokemon) {
 }
 
 // Function to filter and sort Pokemon
+// Replace the existing filterAndSortPokemon function with this enhanced version
 function filterAndSortPokemon() {
     filteredPokemonIds = [];
     
@@ -1332,15 +1487,36 @@ function filterAndSortPokemon() {
     const staminaMin = elements.staminaMin.value !== '' ? parseInt(elements.staminaMin.value) : 0;
     const staminaMax = elements.staminaMax.value !== '' ? parseInt(elements.staminaMax.value) : 15;
     
+    // Parse search terms (supporting comma/pipe for OR, ampersand for AND)
+    let searchTerms = [];
+    if (searchText) {
+        // First split by ampersands (AND groups)
+        const andGroups = searchText.split('&').map(group => group.trim());
+        
+        // Then split each AND group by commas/pipes (OR terms)
+        searchTerms = andGroups.map(group => {
+            return group.split(/[,|]/).map(term => term.trim()).filter(term => term);
+        });
+    }
+    
     // Filter Pokemon
     for (const id in pokemonData) {
         const pokemon = pokemonData[id];
+        let matchesSearch = true;
         
-        // Basic text search
-        if (searchText && !pokemon.mon_name.toLowerCase().includes(searchText) && 
-            !pokemon.mon_number.toString().includes(searchText)) {
-            continue;
+        // Handle search terms if they exist
+        if (searchTerms.length > 0) {
+            matchesSearch = searchTerms.every(orGroup => {
+                // At least one term in the OR group must match
+                return orGroup.some(term => {
+                    // Check if term matches name or number
+                    return pokemon.mon_name.toLowerCase().includes(term) || 
+                           pokemon.mon_number.toString().includes(term);
+                });
+            });
         }
+        
+        if (!matchesSearch) continue;
         
         // Status filter
         if (filterStatus === 'shiny' && pokemon.mon_isshiny !== 'YES') continue;
@@ -1399,7 +1575,7 @@ function filterAndSortPokemon() {
         filteredPokemonIds.push(id);
     }
     
-    // Sort Pokemon
+    // Sort Pokemon (keep existing sort logic)
     filteredPokemonIds.sort((a, b) => {
         const pokemonA = pokemonData[a];
         const pokemonB = pokemonData[b];
