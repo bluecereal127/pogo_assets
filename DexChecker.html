@@ -184,13 +184,13 @@
             box-shadow: 0 3px 10px var(--shadow-color);
             padding: 15px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
             cursor: pointer;
         }
         
         .pokemon-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-12px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
@@ -235,16 +235,6 @@
             color: #333;
         }
         
-        .weather-badge {
-            background-color: #00bcd4;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 12px;
-            padding: 3px 6px;
-            border-radius: 4px;
-        }
-        
         .sprite-container {
             height: 100px;
             display: flex;
@@ -254,8 +244,8 @@
         }
         
         .sprite {
-            max-height: 100px;
-            max-width: 100px;
+            max-height: 140px;
+            max-width: 140px;
         }
         
         .pokemon-name {
@@ -667,6 +657,36 @@
     background-blend-mode: multiply;
 }
 
+/* Radio button styles */
+.filter-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.filter-radio {
+    display: none;
+}
+
+.filter-radio-label {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.filter-radio:checked + .filter-radio-label {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.filter-radio-label:hover {
+    background-color: #e0e0e0;
+}
+
 </style>
 </head>
 <body>
@@ -699,9 +719,34 @@
                     <option value="shiny">Shiny</option>
                     <option value="shadow">Shadow</option>
                     <option value="lucky">Lucky</option>
-                    <option value="weather">Weather Boosted</option>
                 </select>
                 <div id="stickySearchContainer"><input type="text" id="searchInput" placeholder="Search by name..."></div>
+            </div>
+            
+            <div class="filter-radio-group">
+                <input type="radio" id="filterNone" name="specialFilter" value="none" class="filter-radio" checked>
+                <label for="filterNone" class="filter-radio-label">None</label>
+                
+                <input type="radio" id="filterShiny" name="specialFilter" value="shiny" class="filter-radio">
+                <label for="filterShiny" class="filter-radio-label">Shinies</label>
+                
+                <input type="radio" id="filterLucky" name="specialFilter" value="lucky" class="filter-radio">
+                <label for="filterLucky" class="filter-radio-label">Luckys</label>
+                
+                <input type="radio" id="filterShadow" name="specialFilter" value="shadow" class="filter-radio">
+                <label for="filterShadow" class="filter-radio-label">Shadows</label>
+                
+                <input type="radio" id="filterPurified" name="specialFilter" value="purified" class="filter-radio">
+                <label for="filterPurified" class="filter-radio-label">Purified</label>
+                
+                <input type="radio" id="filterHundo" name="specialFilter" value="hundo" class="filter-radio">
+                <label for="filterHundo" class="filter-radio-label">Hundos</label>
+                
+                <input type="radio" id="filterNundo" name="specialFilter" value="nundo" class="filter-radio">
+                <label for="filterNundo" class="filter-radio-label">Nundos</label>
+                
+                <input type="radio" id="filterNickname" name="specialFilter" value="nickname" class="filter-radio">
+                <label for="filterNickname" class="filter-radio-label">Nicknames</label>
             </div>
         </div>
         
@@ -722,6 +767,11 @@
                 
                 <select id="filterForm">
                     <option value="">Any Form</option>
+                    <!-- Will be populated dynamically -->
+                </select>
+                
+                <select id="filterCostume">
+                    <option value="">Any Costume</option>
                     <!-- Will be populated dynamically -->
                 </select>
             </div>
@@ -810,19 +860,7 @@
         <div class="filters-row">
             <button id="selectAllBtn">Select All Visible</button>
             <button id="deselectAllBtn">Deselect All</button>
-            <button id="generateSearchStringBtn" class="accent">Generate Search String</button>
             <span id="selectedCount" style="margin-left: auto;">0 selected</span>
-        </div>
-        
-        <div id="searchStringContainer" class="hidden">
-            <h3>Pokémon GO Search String</h3>
-            <div id="searchStringOutput" class="search-string"></div>
-            <div class="filters-row">
-                <button id="copySearchStringBtn">Copy to Clipboard</button>
-                <div style="margin-left: auto; font-size: 12px; color: #777;">
-                    <span id="searchStringLength">0</span> characters
-                </div>
-            </div>
         </div>
     </div>
 
@@ -862,8 +900,10 @@ let filteredPokemonIds = [];
 let selectedPokemonIds = new Set();
 let allMoves = new Set();
 let allForms = new Set();
+let allCostumes = new Set();
 let displayLimit = 50;
 let currentlyDisplayed = 0;
+let masterUrl = "";
 
 // DOM Elements
 const elements = {
@@ -874,6 +914,7 @@ const elements = {
     filterMove: document.getElementById('filterMove'),
     filterGender: document.getElementById('filterGender'),
     filterForm: document.getElementById('filterForm'),
+    filterCostume: document.getElementById('filterCostume'),
     loadSampleDataBtn: document.getElementById('loadSampleData'),
     uploadJsonBtn: document.getElementById('uploadJsonBtn'),
     advancedFiltersToggle: document.getElementById('toggleAdvancedFilters'),
@@ -888,11 +929,6 @@ const elements = {
     staminaMax: document.getElementById('staminaMax'),
     selectAllBtn: document.getElementById('selectAllBtn'),
     deselectAllBtn: document.getElementById('deselectAllBtn'),
-    generateSearchStringBtn: document.getElementById('generateSearchStringBtn'),
-    searchStringContainer: document.getElementById('searchStringContainer'),
-    searchStringOutput: document.getElementById('searchStringOutput'),
-    copySearchStringBtn: document.getElementById('copySearchStringBtn'),
-    searchStringLength: document.getElementById('searchStringLength'),
     selectedCount: document.getElementById('selectedCount'),
     exportSelectedBtn: document.getElementById('exportSelectedBtn'),
     // Stats elements
@@ -910,22 +946,31 @@ const elements = {
     closeModal: document.getElementById('closeModal'),
     closeModalBtn: document.getElementById('closeModalBtn'),
     // Load more button
-    loadMoreBtn: document.getElementById('loadMoreBtn')
+    loadMoreBtn: document.getElementById('loadMoreBtn'),
+    // Radio buttons
+    filterNone: document.getElementById('filterNone'),
+    filterShiny: document.getElementById('filterShiny'),
+    filterLucky: document.getElementById('filterLucky'),
+    filterShadow: document.getElementById('filterShadow'),
+    filterPurified: document.getElementById('filterPurified'),
+    filterHundo: document.getElementById('filterHundo'),
+    filterNundo: document.getElementById('filterNundo'),
+    filterNickname: document.getElementById('filterNickname')
 };
 
 // Utility functions
 
 function getIVColor(percent) {
     const red = [255, 0, 0];
-    const green = [0, 200, 0];
+    const green = [0, 255, 0];
     const mix = percent / 100;
-    const blend = (a, b) => Math.round(a + (b - a) * mix);
+    const blend = (a, b) => Math.round(a + (b - a) * Math.pow(mix,1.5));
     const r = blend(red[0], green[0]);
     const g = blend(red[1], green[1]);
     const b = blend(red[2], green[2]);
     return {
-        start: `rgba(${r}, ${g}, ${b}, 0.3)`,
-        end: `rgba(${r}, ${g}, ${b}, 0.1)`
+        start: `rgba(${r}, ${g}, ${b}, 0.5)`,
+        end: `rgba(${r}, ${g}, ${b}, 0.275)`
     };
 }
 
@@ -979,40 +1024,38 @@ function getGenderSymbol(gender) {
 function calculateIVPercentage(attack, defence, stamina) {
     // IV percentage is calculated as (A + D + S) / 45 * 100
     return ((attack + defence + stamina) / 45 * 100).toFixed(2);
-}
-
-function formatWeatherType(weatherType) {
-    if (!weatherType) return '';
-    return weatherType
-        .split('_')
-        .map(word => word.charAt(0) + word.slice(1).toLowerCase())
-        .join(' ');
-}
-
-// Function to create a Pokémon card
+}// Function to create a Pokémon card
 function createPokemonCard(id, pokemon) {
     const isShiny = pokemon.mon_isshiny === 'YES';
     const isLucky = pokemon.mon_islucky === 'YES';
     const isShadow = pokemon.mon_alignment === 'SHADOW';
-    const isWeatherBoosted = !!pokemon.mon_weather_boost;
+    const pokeNumber = pokemon.mon_number.toString();
+
+    // Create Sprite URL 
+    let spriteUrl = `https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}`;
+
+    // Check for form variations
+    let pm_form = "";
+    if(pokemon.mon_form) pm_form = pokemon.mon_form;
+    let formPart = pm_form.substring(pm_form.indexOf('_')+1);
+    let finalForm = (formPart === "NORMAL" && pm_form !== "KYUREM_NORMAL" && pm_form !== "GENESECT_NORMAL" && pm_form.substring(0,5) != "UNOWN") ? "" : formPart;
     
-    const pokeNumber = pokemon.mon_number.toString().padStart(3, '0');
+    if(finalForm !== "") spriteUrl += '.f'+finalForm;
     
-    // Determine sprite URL based on form and shiny status
-    let spriteUrl = `https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}${isShiny ? '.s.icon' : '.icon'}.png`;
-    
-    // For form variants, try to find the right sprite
-    if (pokemon.mon_form && pokemon.mon_form !== 'NORMAL') {
-        const formSuffix = pokemon.mon_form;
-        spriteUrl = `https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}.f${formSuffix}${isShiny ? '.s.icon' : '.icon'}.png`;
+    let pm_costume = "";
+    if(pokemon.mon_costume) pm_costume = pokemon.mon_costume;
+    if(pm_costume !== "") spriteUrl += '.c'+pm_costume;
+
+    if (pokemon.mon_isshiny === 'YES') {
+        spriteUrl += '.s';
     }
-    
+    spriteUrl += '.icon.png';
+    masterUrl = spriteUrl;
+
     // Calculate IV percentage
-	const attackIV = Number(pokemon.mon_attack) || 0;
-	const defenceIV = Number(pokemon.mon_defence) || 0;
-	const staminaIV = Number(pokemon.mon_stamina) || 0;
-
-
+    const attackIV = Number(pokemon.mon_attack) || 0;
+    const defenceIV = Number(pokemon.mon_defence) || 0;
+    const staminaIV = Number(pokemon.mon_stamina) || 0;
     const ivPercentage = calculateIVPercentage(attackIV, defenceIV, staminaIV);
     
     // Create card element
@@ -1030,16 +1073,22 @@ function createPokemonCard(id, pokemon) {
         ${isShiny ? '<div class="badge shiny-badge">✨</div>' : ''}
         ${isShadow ? '<div class="badge shadow-badge">👿</div>' : ''}
         ${isLucky ? '<div class="badge lucky-badge">🍀</div>' : ''}
-        ${isWeatherBoosted ? `<div class="weather-badge">${formatWeatherType(pokemon.mon_weather_boost)}</div>` : ''}
         
         <div class="sprite-container">
-            <img src="${spriteUrl}" alt="${pokemon.mon_name}" class="sprite" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}.icon.png'">
+            <img src="${spriteUrl}" alt="${pokemon.mon_name}" class="sprite" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}.icon.png'">
         </div>
         
-        <div class="pokemon-name">${pokemon.mon_name} ${getGenderSymbol(pokemon.mon_gender)}</div>
-        <div class="pokemon-number">${pokemon.mon_nickname ? `<strong>${pokemon.mon_nickname}</strong>` : `#${pokeNumber} ${pokemon.mon_form && !pokemon.mon_form.endsWith('_NORMAL') ? `(${pokemon.mon_form.replace('_', ' ')})` : ''}`}</div>
-        
-        <div class="pokemon-cp">CP ${pokemon.mon_cp}</div>
+        <div class="pokemon-name">
+            ${pokemon.mon_nickname 
+                ? `${pokemon.mon_nickname}` 
+                : pokemon.mon_form && !pokemon.mon_form.endsWith('_NORMAL') 
+                ? pokemon.mon_form.replace(`${pokemon.mon_name}_`, ' ') 
+                : pokemon.mon_costume 
+                    ? `${pokemon.mon_costume} : ${pokemon.mon_name}` 
+                    : pokemon.mon_name}
+                    ${getGenderSymbol(pokemon.mon_gender)}
+            </div>
+            <div class="pokemon-cp">CP ${pokemon.mon_cp}</div>
         
         <div class="stats">
             <div class="stat">
@@ -1057,14 +1106,12 @@ function createPokemonCard(id, pokemon) {
         </div>
         
         <div class="move">${formatMoveName(pokemon.mon_move_1)}</div>
-        <div class="move">${formatMoveName(pokemon.mon_move_2)}</div>
+        <div class="move">${formatMoveName(pokemon.mon_move_2)}${" " + formatMoveName(pokemon.mon_move_3)}</div>
     `;
     
-    // Add selected class if this pokemon is in selectedPokemonIds
     if (selectedPokemonIds.has(id)) {
         card.classList.add('selected');
     }
-    
     
     const percent = parseFloat(ivPercentage);
     const color = getIVColor(percent);
@@ -1085,11 +1132,7 @@ function togglePokemonSelection(id, pokemon) {
         document.querySelector(`.pokemon-card[data-id="${id}"]`).classList.add('selected');
     }
     
-    // Update selected count
     elements.selectedCount.textContent = `${selectedPokemonIds.size} selected`;
-    
-    // Show or hide search string container based on selection
-    elements.searchStringContainer.classList.toggle('hidden', selectedPokemonIds.size === 0);
 }
 
 // Function to show Pokemon details in modal
@@ -1098,35 +1141,42 @@ function showPokemonDetails(id, pokemon) {
     const isLucky = pokemon.mon_islucky === 'YES';
     const isShadow = pokemon.mon_alignment === 'SHADOW';
     const isPurified = pokemon.mon_alignment === 'PURIFIED';
-    const isWeatherBoosted = !!pokemon.mon_weather_boost;
+    const pokeNumber = pokemon.mon_number.toString();
     
-    const pokeNumber = pokemon.mon_number.toString().padStart(3, '0');
+    let spriteUrl = `https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}${isShiny ? '.s.icon' : '.icon'}.png`;
+
+    let pm_form = "";
+    if(pokemon.mon_form) pm_form = pokemon.mon_form;
+    let formPart = pm_form.substring(pm_form.indexOf('_')+1);
+    let finalForm = (formPart === "NORMAL" && pm_form !== "KYUREM_NORMAL" && pm_form !== "GENESECT_NORMAL") ? "" : formPart;
     
-    // Determine sprite URL based on form and shiny status
-    let spriteUrl = `https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}${isShiny ? '.s.icon' : '.icon'}.png`;
+    if(finalForm !== "") spriteUrl += '.f'+finalForm;
     
-    // For form variants, try to find the right sprite
-    if (pokemon.mon_form && pokemon.mon_form !== 'NORMAL') {
-        const formSuffix = pokemon.mon_form.toLowerCase();
-        spriteUrl = `https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}.f${formSuffix}${isShiny ? '.s.icon' : '.icon'}.png`;
+    let pm_costume = "";
+    if(pokemon.mon_costume) pm_costume = pokemon.mon_costume;
+    if(pm_costume !== "") spriteUrl += '.c'+pm_costume;
+
+    if (pokemon.mon_isshiny === 'YES') {
+        spriteUrl += '.s';
     }
+    spriteUrl += '.icon.png';
     
     // Calculate IV percentage
-	const attackIV = Number(pokemon.mon_attack) || 0;
-	const defenceIV = Number(pokemon.mon_defence) || 0;
-	const staminaIV = Number(pokemon.mon_stamina) || 0;
-
-
+    const attackIV = Number(pokemon.mon_attack) || 0;
+    const defenceIV = Number(pokemon.mon_defence) || 0;
+    const staminaIV = Number(pokemon.mon_stamina) || 0;
     const ivPercentage = calculateIVPercentage(attackIV, defenceIV, staminaIV);
     
     // Set modal title
     elements.modalTitle.innerHTML = `${pokemon.mon_name} ${getGenderSymbol(pokemon.mon_gender)} ${isShiny ? '✨' : ''} ${isShadow ? '👿' : ''} ${isLucky ? '🍀' : ''}`;
     
+    masterUrl = spriteUrl;
+    
     // Build modal content
     elements.modalDetails.innerHTML = `
         <div class="detail-pokemon-sprite">
-            <img src="${spriteUrl}" alt="${pokemon.mon_name}" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/pogo_assets/pm${pokeNumber}.icon.png'">
-            <h3>#${pokeNumber} ${pokemon.mon_form && pokemon.mon_form !== 'NORMAL' ? `(${pokemon.mon_form.replace('_', ' ')})` : ''}</h3>
+            <img src="${spriteUrl}" alt="${pokemon.mon_name}" class="sprite" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}.icon.png'">
+            <div class="pokemon-number">${pokemon.mon_nickname ? `<strong>${pokemon.mon_nickname}</strong>` : `${pokemon.mon_form && !pokemon.mon_form.endsWith('_NORMAL') ? `${pokemon.mon_form.replace((pokemon.mon_name)+'_', ' ')}` : ''}`}</div>
         </div>
         
         <div class="detail-pokemon-info">
@@ -1152,7 +1202,6 @@ function showPokemonDetails(id, pokemon) {
                             ${isShadow ? '<span class="badge shadow-badge">Shadow</span>' : ''}
                             ${isPurified ? '<span class="badge">Purified</span>' : ''}
                             ${isLucky ? '<span class="badge lucky-badge">Lucky</span>' : ''}
-                            ${isWeatherBoosted ? `<span class="badge">Weather Boosted (${formatWeatherType(pokemon.mon_weather_boost)})</span>` : ''}
                         </td>
                     </tr>
                     <tr>
@@ -1253,16 +1302,25 @@ function showPokemonDetails(id, pokemon) {
 
 // Function to filter and sort Pokemon
 function filterAndSortPokemon() {
-    // Reset filtered list
     filteredPokemonIds = [];
     
-    // Get filter values
     const searchText = elements.searchInput.value.toLowerCase();
     const sortBy = elements.sortBy.value;
     const filterStatus = elements.filterStatus.value;
     const filterMove = elements.filterMove.value;
     const filterGender = elements.filterGender.value;
     const filterForm = elements.filterForm.value;
+    const filterCostume = elements.filterCostume.value;
+    
+    // Get selected radio filter
+    let specialFilter = '';
+    if (elements.filterShiny.checked) specialFilter = 'shiny';
+    else if (elements.filterLucky.checked) specialFilter = 'lucky';
+    else if (elements.filterShadow.checked) specialFilter = 'shadow';
+    else if (elements.filterPurified.checked) specialFilter = 'purified';
+    else if (elements.filterHundo.checked) specialFilter = 'hundo';
+    else if (elements.filterNundo.checked) specialFilter = 'nundo';
+    else if (elements.filterNickname.checked) specialFilter = 'nickname';
     
     // Advanced filters
     const cpMin = elements.cpMin.value !== '' ? parseInt(elements.cpMin.value) : 0;
@@ -1288,7 +1346,25 @@ function filterAndSortPokemon() {
         if (filterStatus === 'shiny' && pokemon.mon_isshiny !== 'YES') continue;
         if (filterStatus === 'shadow' && pokemon.mon_alignment !== 'SHADOW') continue;
         if (filterStatus === 'lucky' && pokemon.mon_islucky !== 'YES') continue;
-        if (filterStatus === 'weather' && !pokemon.mon_weather_boost) continue;
+        
+        // Special radio filters
+        if (specialFilter === 'shiny' && pokemon.mon_isshiny !== 'YES') continue;
+        if (specialFilter === 'lucky' && pokemon.mon_islucky !== 'YES') continue;
+        if (specialFilter === 'shadow' && pokemon.mon_alignment !== 'SHADOW') continue;
+        if (specialFilter === 'purified' && pokemon.mon_alignment !== 'PURIFIED') continue;
+        if (specialFilter === 'hundo') {
+            const totalIV = (parseInt(pokemon.mon_attack) || 0) + 
+                          (parseInt(pokemon.mon_defence) || 0) + 
+                          (parseInt(pokemon.mon_stamina) || 0);
+            if (totalIV !== 45) continue;
+        }
+        if (specialFilter === 'nundo') {
+            const totalIV = (parseInt(pokemon.mon_attack) || 0) + 
+                          (parseInt(pokemon.mon_defence) || 0) + 
+                          (parseInt(pokemon.mon_stamina) || 0);
+            if (totalIV !== 0) continue;
+        }
+        if (specialFilter === 'nickname' && !pokemon.mon_nickname) continue;
         
         // Move filter
         if (filterMove && 
@@ -1304,22 +1380,22 @@ function filterAndSortPokemon() {
         // Form filter
         if (filterForm && pokemon.mon_form !== filterForm) continue;
         
+        // Costume filter
+        if (filterCostume && pokemon.mon_costume !== filterCostume) continue;
+        
         // CP range filter
         const cp = parseInt(pokemon.mon_cp);
         if (cp < cpMin || cp > cpMax) continue;
         
         // IV filters
-		const attackIV = Number(pokemon.mon_attack) || 0;
-		const defenceIV = Number(pokemon.mon_defence) || 0;
-		const staminaIV = Number(pokemon.mon_stamina) || 0;
-
-
+        const attackIV = Number(pokemon.mon_attack) || 0;
+        const defenceIV = Number(pokemon.mon_defence) || 0;
+        const staminaIV = Number(pokemon.mon_stamina) || 0;
         
         if (attackIV < attackMin || attackIV > attackMax) continue;
         if (defenceIV < defenceMin || defenceIV > defenceMax) continue;
         if (staminaIV < staminaMin || staminaIV > staminaMax) continue;
         
-        // If all filters pass, add to filtered list
         filteredPokemonIds.push(id);
     }
     
@@ -1346,53 +1422,47 @@ function filterAndSortPokemon() {
         }
     });
     
-    // Reset display
     displayPokemon(true);
 }
 
 // Function to display Pokemon
 function displayPokemon(reset = false) {
-    // Clear grid if reset is true
     if (reset) {
         elements.pokemonGrid.innerHTML = '';
         currentlyDisplayed = 0;
     }
     
-    // Calculate how many more to display
     const remaining = filteredPokemonIds.length - currentlyDisplayed;
     const toDisplay = Math.min(displayLimit, remaining);
     
-    // Get subset of Pokemon to display
     const displayIds = filteredPokemonIds.slice(currentlyDisplayed, currentlyDisplayed + toDisplay);
     
-    // Create and append cards
     for (const id of displayIds) {
         const pokemon = pokemonData[id];
         const card = createPokemonCard(id, pokemon);
         elements.pokemonGrid.appendChild(card);
     }
     
-    // Update counter
     currentlyDisplayed += toDisplay;
-    
-    // Show or hide load more button
     elements.loadMoreBtn.classList.toggle('hidden', currentlyDisplayed >= filteredPokemonIds.length);
     
-    // Show message if no results
     if (filteredPokemonIds.length === 0) {
         elements.pokemonGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #777;">No Pokémon found matching your filters.</div>';
     }
 }
 
-// Function to populate move and form dropdowns
+// Function to populate dropdowns
 function populateDropdowns() {
-    // Clear existing options (except the first one)
     while (elements.filterMove.options.length > 1) {
         elements.filterMove.remove(1);
     }
     
     while (elements.filterForm.options.length > 1) {
         elements.filterForm.remove(1);
+    }
+    
+    while (elements.filterCostume.options.length > 1) {
+        elements.filterCostume.remove(1);
     }
     
     // Add move options
@@ -1405,11 +1475,20 @@ function populateDropdowns() {
     
     // Add form options
     for (const form of Array.from(allForms).sort()) {
-		if (form.endsWith('_NORMAL') || form.endsWith('_STANDARD')) continue;
+        if (form.endsWith('_NORMAL') || form.endsWith('_STANDARD')) continue;
         const option = document.createElement('option');
         option.value = form;
         option.textContent = form ? form.replace('_', ' ') : 'Normal';
         elements.filterForm.appendChild(option);
+    }
+    
+    // Add costume options
+    for (const costume of Array.from(allCostumes).sort()) {
+        if (!costume) continue;
+        const option = document.createElement('option');
+        option.value = costume;
+        option.textContent = costume.replace('_', ' ');
+        elements.filterCostume.appendChild(option);
     }
 }
 
@@ -1420,14 +1499,7 @@ function updateStats() {
     }
     
     const totalPokemon = Object.keys(pokemonData).length;
-    
-    // Calculate unique species
     const uniqueSpecies = new Set();
-    for (const id in pokemonData) {
-        uniqueSpecies.add(pokemonData[id].mon_number);
-    }
-    
-    // Count special attributes
     let shinyCount = 0;
     let shadowCount = 0;
     let luckyCount = 0;
@@ -1436,6 +1508,7 @@ function updateStats() {
     
     for (const id in pokemonData) {
         const pokemon = pokemonData[id];
+        uniqueSpecies.add(pokemon.mon_number);
         
         if (pokemon.mon_isshiny === 'YES') shinyCount++;
         if (pokemon.mon_alignment === 'SHADOW') shadowCount++;
@@ -1443,15 +1516,12 @@ function updateStats() {
         
         totalCp += parseInt(pokemon.mon_cp) || 0;
         
-		const attackIV = Number(pokemon.mon_attack) || 0;
-		const defenceIV = Number(pokemon.mon_defence) || 0;
-		const staminaIV = Number(pokemon.mon_stamina) || 0;
-
-
-        totalIv += (attackIV + defenceIV + staminaIV) / 45; // Normalized IV (0-1)
+        const attackIV = Number(pokemon.mon_attack) || 0;
+        const defenceIV = Number(pokemon.mon_defence) || 0;
+        const staminaIV = Number(pokemon.mon_stamina) || 0;
+        totalIv += (attackIV + defenceIV + staminaIV) / 45;
     }
     
-    // Update DOM
     elements.totalPokemon.textContent = totalPokemon;
     elements.uniquePokemon.textContent = uniqueSpecies.size;
     elements.shinyCount.textContent = shinyCount;
@@ -1461,91 +1531,6 @@ function updateStats() {
     elements.avgIv.textContent = (totalIv / totalPokemon * 100).toFixed(2) + '%';
 }
 
-// Function to generate PoGO search string
-function generateSearchString() {
-    if (selectedPokemonIds.size === 0) {
-        elements.searchStringOutput.textContent = 'No Pokémon selected';
-        elements.searchStringLength.textContent = '0';
-        return;
-    }
-    
-    // Group pokemon by dex number for more efficient search strings
-    const groupByDex = {};
-    for (const id of selectedPokemonIds) {
-        const pokemon = pokemonData[id];
-        const dexNum = pokemon.mon_number;
-        
-        if (!groupByDex[dexNum]) {
-            groupByDex[dexNum] = [];
-        }
-        
-        groupByDex[dexNum].push(pokemon);
-    }
-    
-    // Generate search parts
-    const searchParts = [];
-    
-    // If few enough pokemon, we can just use their dex numbers
-    if (Object.keys(groupByDex).length <= 20) {
-        const dexNumbers = Object.keys(groupByDex).join(',');
-        searchParts.push(dexNumbers);
-    } else {
-        // We need to be more clever about grouping
-        // First, try to group by special attributes
-        const shinies = Array.from(selectedPokemonIds)
-            .filter(id => pokemonData[id].mon_isshiny === 'YES')
-            .map(id => pokemonData[id].mon_number)
-            .join(',');
-        
-        if (shinies) {
-            searchParts.push(`shiny&${shinies}`);
-        }
-        
-        const shadows = Array.from(selectedPokemonIds)
-            .filter(id => pokemonData[id].mon_alignment === 'SHADOW')
-            .map(id => pokemonData[id].mon_number)
-            .join(',');
-        
-        if (shadows) {
-            searchParts.push(`shadow&${shadows}`);
-        }
-        
-        const luckies = Array.from(selectedPokemonIds)
-            .filter(id => pokemonData[id].mon_islucky === 'YES')
-            .map(id => pokemonData[id].mon_number)
-            .join(',');
-        
-        if (luckies) {
-            searchParts.push(`lucky&${luckies}`);
-        }
-        
-        // Then try regular pokemon in chunks
-        const regularPokemon = Array.from(selectedPokemonIds)
-            .filter(id => 
-                pokemonData[id].mon_isshiny !== 'YES' && 
-                pokemonData[id].mon_alignment !== 'SHADOW' && 
-                pokemonData[id].mon_islucky !== 'YES'
-            )
-            .map(id => pokemonData[id].mon_number);
-        
-        // Split into chunks of 20 for search efficiency
-        const chunkSize = 20;
-        for (let i = 0; i < regularPokemon.length; i += chunkSize) {
-            const chunk = regularPokemon.slice(i, i + chunkSize).join(',');
-            if (chunk) {
-                searchParts.push(chunk);
-            }
-        }
-    }
-    
-    // Join parts with OR operator
-    const searchString = searchParts.join('|');
-    
-    // Update output
-    elements.searchStringOutput.textContent = searchString || 'Error generating search string';
-    elements.searchStringLength.textContent = searchString.length;
-}
-
 // Function to export selected pokemon to JSON
 function exportSelectedPokemon() {
     if (selectedPokemonIds.size === 0) {
@@ -1553,27 +1538,21 @@ function exportSelectedPokemon() {
         return;
     }
     
-    // Create a subset of pokemonData with only the selected pokemon
     const selectedPokemon = {};
     for (const id of selectedPokemonIds) {
         selectedPokemon[id] = pokemonData[id];
     }
     
-    // Convert to JSON
     const jsonString = JSON.stringify(selectedPokemon, null, 2);
-    
-    // Create a blob and download link
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     
-    // Create temporary link and trigger download
     const a = document.createElement('a');
     a.href = url;
     a.download = 'selected_pokemon.json';
     document.body.appendChild(a);
     a.click();
     
-    // Cleanup
     setTimeout(() => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
@@ -1582,124 +1561,26 @@ function exportSelectedPokemon() {
 
 // Function to load sample data
 function loadSampleData() {
-    // Simple sample data for demonstration
     const sampleData = {
-        "1": {
-            "mon_name": "Bulbasaur",
-            "mon_number": "1",
-            "mon_cp": "845",
-            "mon_attack": "15",
-            "mon_defence": "14",
-            "mon_stamina": "13",
-            "mon_move_1": "VINE_WHIP_FAST",
-            "mon_move_2": "POWER_WHIP",
-            "mon_move_1_type": "GRASS",
-            "mon_move_2_type": "GRASS",
-            "mon_gender": "MALE",
-            "mon_form": "NORMAL",
-            "mon_type_1": "GRASS",
-            "mon_type_2": "POISON",
-            "mon_height": "0.71",
-            "mon_weight": "6.9",
-            "mon_isshiny": "NO",
-            "mon_islucky": "NO",
-            "mon_alignment": "NORMAL",
-            "mon_timestamp": "2023-04-15"
-        },
-        "2": {
-            "mon_name": "Charmander",
-            "mon_number": "4",
-            "mon_cp": "912",
-            "mon_attack": "15",
-            "mon_defence": "15",
-            "mon_stamina": "15",
-            "mon_move_1": "FIRE_SPIN_FAST",
-            "mon_move_2": "FLAMETHROWER",
-            "mon_move_1_type": "FIRE",
-            "mon_move_2_type": "FIRE",
-            "mon_gender": "MALE",
-            "mon_form": "NORMAL",
-            "mon_type_1": "FIRE",
-            "mon_type_2": "",
-            "mon_height": "0.61",
-            "mon_weight": "8.5",
-            "mon_isshiny": "YES",
-            "mon_islucky": "NO",
-            "mon_alignment": "NORMAL",
-            "mon_timestamp": "2023-05-20"
-        },
-        "3": {
-            "mon_name": "Squirtle",
-            "mon_number": "7",
-            "mon_cp": "825",
-            "mon_attack": "12",
-            "mon_defence": "14",
-            "mon_stamina": "13",
-            "mon_move_1": "WATER_GUN_FAST",
-            "mon_move_2": "HYDRO_PUMP",
-            "mon_move_1_type": "WATER",
-            "mon_move_2_type": "WATER",
-            "mon_gender": "FEMALE",
-            "mon_form": "NORMAL",
-            "mon_type_1": "WATER",
-            "mon_type_2": "",
-            "mon_height": "0.51",
-            "mon_weight": "9.0",
-            "mon_isshiny": "NO",
-            "mon_islucky": "NO",
-            "mon_alignment": "NORMAL",
-            "mon_timestamp": "2023-06-10"
-        },
-        "4": {
-            "mon_name": "Pikachu",
-            "mon_number": "25",
-            "mon_cp": "756",
-            "mon_attack": "15",
-            "mon_defence": "13",
-            "mon_stamina": "14",
-            "mon_move_1": "THUNDER_SHOCK_FAST",
-            "mon_move_2": "THUNDERBOLT",
-            "mon_move_1_type": "ELECTRIC",
-            "mon_move_2_type": "ELECTRIC",
-            "mon_gender": "MALE",
-            "mon_form": "COSTUME_2020",
-            "mon_type_1": "ELECTRIC",
-            "mon_type_2": "",
-            "mon_height": "0.41",
-            "mon_weight": "6.0",
-            "mon_isshiny": "YES",
-            "mon_islucky": "YES",
-            "mon_alignment": "NORMAL",
-            "mon_timestamp": "2023-07-04"
-        },
-        "5": {
-            "mon_name": "Mewtwo",
-            "mon_number": "150",
-            "mon_cp": "4178",
-            "mon_attack": "15",
-            "mon_defence": "15",
-            "mon_stamina": "15",
-            "mon_move_1": "PSYCHO_CUT_FAST",
-            "mon_move_2": "PSYSTRIKE",
-            "mon_move_3": "SHADOW_BALL",
-            "mon_move_1_type": "PSYCHIC",
-            "mon_move_2_type": "PSYCHIC",
-            "mon_move_3_type": "GHOST",
-            "mon_gender": "GENDERLESS",
-            "mon_form": "ARMORED",
-            "mon_type_1": "PSYCHIC",
-            "mon_type_2": "",
-            "mon_height": "2.01",
-            "mon_weight": "122.0",
-            "mon_isshiny": "NO",
-            "mon_islucky": "NO",
-            "mon_alignment": "SHADOW",
-            "mon_weather_boost": "WINDY",
-            "mon_timestamp": "2023-08-12"
+        "2953501956203385596" : {
+            "mon_isshiny" : "YES",
+            "mon_islucky" : "NO",
+            "mon_weight" : 6.1410894393920898,
+            "mon_move_1" : "HIDDEN_POWER_FAST",
+            "mon_height" : 0.53191697597503662,
+            "mon_gender" : "GENDERLESS",
+            "mon_form" : "UNOWN_P",
+            "mon_stamina" : 14,
+            "mon_attack" : 12,
+            "mon_name" : "UNOWN",
+            "mon_move_2" : "STRUGGLE",
+            "mon_cp" : 684,
+            "mon_number" : 201,
+            "mon_defence" : 12,
+            "mon_weather_boost" : "WINDY"
         }
     };
     
-    // Load the data
     loadPokemonData(sampleData);
 }
 
@@ -1724,24 +1605,18 @@ function handleFileUpload(event) {
     };
     
     reader.readAsText(file);
-    
-    // Reset file input
     fileInput.value = '';
 }
 
 // Function to load Pokemon data
 function loadPokemonData(data) {
-    // Store data
     pokemonData = data;
-    
-    // Reset selected Pokémon
     selectedPokemonIds.clear();
     elements.selectedCount.textContent = '0 selected';
-    elements.searchStringContainer.classList.add('hidden');
     
-    // Extract all unique moves and forms for filters
     allMoves = new Set();
     allForms = new Set();
+    allCostumes = new Set();
     
     for (const id in pokemonData) {
         const pokemon = pokemonData[id];
@@ -1749,80 +1624,37 @@ function loadPokemonData(data) {
         if (pokemon.mon_move_1) allMoves.add(pokemon.mon_move_1);
         if (pokemon.mon_move_2) allMoves.add(pokemon.mon_move_2);
         if (pokemon.mon_move_3) allMoves.add(pokemon.mon_move_3);
-        
         if (pokemon.mon_form) allForms.add(pokemon.mon_form);
+        if (pokemon.mon_costume) allCostumes.add(pokemon.mon_costume);
     }
     
-    // Populate dropdowns
     populateDropdowns();
-    
-    // Update stats
     updateStats();
-    
-    // Apply filters and display Pokemon
     filterAndSortPokemon();
-}
-
-// Function to copy search string to clipboard
-function copySearchString() {
-    const searchString = elements.searchStringOutput.textContent;
-    
-    if (!searchString || searchString === 'No Pokémon selected') {
-        return;
-    }
-    
-    // Use clipboard API to copy text
-    navigator.clipboard.writeText(searchString)
-        .then(() => {
-            // Show success message
-            const originalText = elements.copySearchStringBtn.textContent;
-            elements.copySearchStringBtn.textContent = 'Copied!';
-            
-            // Reset button text after 2 seconds
-            setTimeout(() => {
-                elements.copySearchStringBtn.textContent = originalText;
-            }, 2000);
-        })
-        .catch(err => {
-            console.error('Failed to copy: ', err);
-            alert('Failed to copy search string.');
-        });
 }
 
 // Function to select all visible Pokemon
 function selectAllVisible() {
     for (const id of filteredPokemonIds) {
         selectedPokemonIds.add(id);
-        
-        // Add selected class to the card if it's displayed
         const card = document.querySelector(`.pokemon-card[data-id="${id}"]`);
         if (card) {
             card.classList.add('selected');
         }
     }
     
-    // Update selected count
     elements.selectedCount.textContent = `${selectedPokemonIds.size} selected`;
-    
-    // Show search string container if there are selected Pokemon
-    elements.searchStringContainer.classList.toggle('hidden', selectedPokemonIds.size === 0);
 }
 
 // Function to deselect all Pokemon
 function deselectAll() {
     selectedPokemonIds.clear();
-    
-    // Remove selected class from all cards
     const selectedCards = document.querySelectorAll('.pokemon-card.selected');
     for (const card of selectedCards) {
         card.classList.remove('selected');
     }
     
-    // Update selected count
     elements.selectedCount.textContent = '0 selected';
-    
-    // Hide search string container
-    elements.searchStringContainer.classList.add('hidden');
 }
 
 // Event listeners
@@ -1834,6 +1666,17 @@ function setupEventListeners() {
     elements.filterMove.addEventListener('change', filterAndSortPokemon);
     elements.filterGender.addEventListener('change', filterAndSortPokemon);
     elements.filterForm.addEventListener('change', filterAndSortPokemon);
+    elements.filterCostume.addEventListener('change', filterAndSortPokemon);
+    
+    // Radio button filters
+    elements.filterShiny.addEventListener('change', filterAndSortPokemon);
+    elements.filterLucky.addEventListener('change', filterAndSortPokemon);
+    elements.filterShadow.addEventListener('change', filterAndSortPokemon);
+    elements.filterPurified.addEventListener('change', filterAndSortPokemon);
+    elements.filterHundo.addEventListener('change', filterAndSortPokemon);
+    elements.filterNundo.addEventListener('change', filterAndSortPokemon);
+    elements.filterNickname.addEventListener('change', filterAndSortPokemon);
+    elements.filterNone.addEventListener('change', filterAndSortPokemon);
     
     // Advanced filters toggle
     elements.advancedFiltersToggle.addEventListener('change', function() {
@@ -1853,23 +1696,20 @@ function setupEventListeners() {
     // Selection tools
     elements.selectAllBtn.addEventListener('click', selectAllVisible);
     elements.deselectAllBtn.addEventListener('click', deselectAll);
-    elements.generateSearchStringBtn.addEventListener('click', generateSearchString);
-    elements.copySearchStringBtn.addEventListener('click', copySearchString);
     
     // Load more button
     elements.loadMoreBtn.addEventListener('click', function() {
         displayPokemon(false);
     });
-	window.addEventListener('scroll', function () {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
-        displayPokemon(false);
-    }
-});
-
+    
+    window.addEventListener('scroll', function () {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+            displayPokemon(false);
+        }
+    });
     
     // Upload JSON file
     elements.uploadJsonBtn.addEventListener('click', function() {
-        // Create temporary file input
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = '.json';
@@ -1901,25 +1741,24 @@ function setupEventListeners() {
     
     // Keyboard events
     document.addEventListener('keydown', function(event) {
-        // Close modal with Escape key
         if (event.key === 'Escape' && !elements.pokemonModal.classList.contains('hidden')) {
             elements.pokemonModal.classList.add('hidden');
         }
     });
-	document.querySelectorAll('.alpha-nav li').forEach(li => {
-    li.addEventListener('click', () => {
-        const letter = li.dataset.letter.toUpperCase();
-        const targetCard = Array.from(document.querySelectorAll('.pokemon-card')).find(card => {
-            const name = card.querySelector('.pokemon-name')?.textContent?.trim()?.toUpperCase();
-            return name?.startsWith(letter);
+    
+    document.querySelectorAll('.alpha-nav li').forEach(li => {
+        li.addEventListener('click', () => {
+            const letter = li.dataset.letter.toUpperCase();
+            const targetCard = Array.from(document.querySelectorAll('.pokemon-card')).find(card => {
+                const name = card.querySelector('.pokemon-name')?.textContent?.trim()?.toUpperCase();
+                return name?.startsWith(letter);
+            });
+
+            if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
-
-        if (targetCard) {
-            targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
     });
-});
-
 }
 
 // Initialize the app
@@ -1946,3 +1785,5 @@ function init() {
 // Start the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
 </script>
+</body>
+</html>
