@@ -5,6 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon GO Collection Viewer</title>
     <style>
+        
+.modern-card {
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  background: rgb(209, 209, 209);
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modern-card-top {
+  padding: 8px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modern-card-bottom {
+  background-color: whitesmoke;
+  padding: 8px;
+  opacity: 0.8375;
+  border-radius: 12px;
+}
+
+.modern-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modern-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.modern-types {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.type-badge-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.type-icon-row .type-badge-icon {
+  transform: scale(0.9);            /* shrink to 80% */
+}
+
+.type-icon-row {
+  margin-bottom: 12px;              /* spacing between types and moves */
+}
+
+
+.modern-image {
+  display: flex;
+  justify-content: center;
+}
+
+.pokemon-img {
+  width: 96px;
+  height: 96px;
+}
+
+.modern-cp {
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #d12b2b;
+}
+
+.modern-info-row {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.info-block.label {
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.modern-moves {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modern-ivs {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.iv-labels {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1rem;
+  color: #555;
+}
+
+
         :root {
             --primary-color: #e53935;
             --secondary-color: #2196f3;
@@ -23,7 +131,7 @@
             padding: 0;
         }
         
-        body {
+         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 85%;
             margin: 0 auto;
@@ -31,7 +139,15 @@
             background-color: var(--dark-color);
             color: var(--text-color);
             line-height: 1.6;
-        }
+        } 
+        /* body {
+        background-image: url('https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Backgrounds/Sky_Stars.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        } */
+
         
         h1, h2, h3 {
             color: var(--primary-color);
@@ -73,9 +189,7 @@
         .filters-row:last-child {
             margin-bottom: 0;
         }
-        
-        
-        
+
         select, input, button {
             padding: 8px 12px;
             border: 1px solid #ddd;
@@ -131,11 +245,19 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-        /* .stats-container.selected-mode {
-            border: 4px solid red;
-            border-radius: 10px;
-            padding: 8px;
+
+        .pokemon-card.selected {
+            box-shadow: 0 0 0 3px red;
+            border-radius: 12px;
+        }
+
+        /* .pokemon-card.selected {
+            outline: 2px solid red;
+            outline-offset: -2px;
+            border-radius: 12px;
         } */
+
+
         .stats-container.selected-mode .stat-box {
             border: 3px solid red;
             border-radius: 8px;
@@ -153,68 +275,6 @@
             padding: 4px;
         }
 
-
-
-        /* Match Shiny Card */
-        .shiny-stat {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #fff 0%, #fff 50%, #fffde7 100%);
-        }
-        .shiny-stat::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 60% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-                radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.9) 0%, transparent 25%);
-            animation: twinkle 3s infinite ease-in-out;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Match Shadow Card */
-        .shadow-stat {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-        }
-        .shadow-stat::before {
-            content: '';
-            position: absolute;
-            inset: -30%;
-            background: radial-gradient(circle at center, rgba(91, 15, 153, 0.35) 0%, transparent 70%);
-            animation: pulseAura 3s infinite ease-in-out alternate, floatSmoke 25s infinite linear;
-            z-index: 0;
-            pointer-events: none;
-            filter: blur(4px);
-            opacity: 0.9;
-        }
-
-
-        /* Match Lucky Card */
-        .lucky-stat {
-            position: relative;
-            overflow: hidden;
-            background: var(--card-bg);
-        }
-        .lucky-stat::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle, rgba(255, 217, 0, 0.349) 0%, transparent 70%);
-            animation: pulseAura 1s infinite ease-in-out alternate, floatCloudReverse 25s infinite linear;
-            opacity: 0.7;
-            background-position: 100px 100px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        
         .stat-box {
             flex: 1;
             min-width: 150px;
@@ -268,25 +328,83 @@
         
         /*---Pokemon Card styles---*/
         .pokemon-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 3px 10px var(--shadow-color);
-            padding: 15px;
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            cursor: pointer;
+        background: white;
+        border-radius: 20px;
+        padding: 12px;
+        margin: 8px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        font-family: 'Arial', sans-serif;
         }
-        
-        .pokemon-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .pokemon-card.selected {
-            border: 4px solid var(--primary-color);
-            padding: 12px;
-        }
+
+.pokemon-img {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+.pokemon-name {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-top: 4px;
+}
+
+.type-icons {
+  margin-top: 4px;
+}
+
+.type-badge-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 2px;
+  vertical-align: middle;
+}
+
+.cp-text {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #d12b2b;
+  margin-top: 6px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.info-block {
+  width: 33%;
+}
+
+.info-types {
+  width: 33%;
+  opacity: 0.7;
+  font-weight: bold;
+}
+
+.moves {
+  margin-top: 6px;
+}
+
+.iv-row {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.iv-icons {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1em;
+  color: #444;
+  margin-top: -4px;
+}
+
         
         
         /*---New Type-based Filtering Grid ---*/
@@ -329,6 +447,17 @@
             background: #AFD;
         }
 
+        .move-icon-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 4px;
+        }
+
+        .move-icon-wrap img.type-badge-icon {
+        width: 20px;
+        height: 20px;
+        }
 
 
         .pokemon-types {
@@ -342,6 +471,7 @@
         .move-badges {
             display: flex;
             flex-wrap: wrap;
+            flex-direction: column;
             gap: 4px;
             justify-content: center;
             margin-top: 4px;
@@ -377,6 +507,44 @@
         .type-badge.type-rock    { background-color: #B8A038; color: white; }
         .type-badge.type-steel   { background-color: #B8B8D0; color: #000; }
         .type-badge.type-water   { background-color: #6890F0; color: white; }
+
+        /* .type-badge.type-STABbug     { background-color: #A8B820; color: white; }
+        .type-badge.type-STABdark    { background-color: #705848; color: white; }
+        .type-badge.type-STABdragon  { background-color: #7038F8; color: white; }
+        .type-badge.type-STABelectric{ background-color: #F8D030; color: #000; }
+        .type-badge.type-STABfairy   { background-color: #EE99AC; color: white; }
+        .type-badge.type-STABfighting{ background-color: #C03028; color: white; }
+        .type-badge.type-STABfire    { background-color: #F08030; color: white; }
+        .type-badge.type-STABflying  { background-color: #A890F0; color: #000; }
+        .type-badge.type-STABghost   { background-color: #705898; color: white; }
+        .type-badge.type-STABgrass   { background-color: #78C850; color: white; }
+        .type-badge.type-STABground  { background-color: #E0C068; color: white; }
+        .type-badge.type-STABice     { background-color: #98D8D8; color: #000; }
+        .type-badge.type-STABnormal  { background-color: #A8A878; color: #000; }
+        .type-badge.type-STABpoison  { background-color: #A040A0; color: white; }
+        .type-badge.type-STABpsychic { background-color: #F85888; color: white; }
+        .type-badge.type-STABrock    { background-color: #B8A038; color: white; }
+        .type-badge.type-STABsteel   { background-color: #B8B8D0; color: #000; }
+        .type-badge.type-STABwater   { background-color: #6890F0; color: white; } */
+
+        /* .type-badge.type-bug     { background-color: #b0b86c; color: white; }
+        .type-badge.type-dark    { background-color: #70645c; color: white; }
+        .type-badge.type-dragon  { background-color: #b799f7; color: white; }
+        .type-badge.type-electric{ background-color: #f7e494; color: #000; }
+        .type-badge.type-fairy   { background-color: #edc2cc; color: white; }
+        .type-badge.type-fighting{ background-color: #bf7775; color: white; }
+        .type-badge.type-fire    { background-color: #f0b890; color: white; }
+        .type-badge.type-flying  { background-color: #ccc0f0; color: #000; }
+        .type-badge.type-ghost   { background-color: #857999; color: white; }
+        .type-badge.type-grass   { background-color: #9fc78b; color: white; }
+        .type-badge.type-ground  { background-color: #e0d0a4; color: white; }
+        .type-badge.type-ice     { background-color: #b8d9d9; color: #000; }
+        .type-badge.type-normal  { background-color: #a8a891; color: #000; }
+        .type-badge.type-poison  { background-color: #a170a1; color: white; }
+        .type-badge.type-psychic { background-color: #f7a8c0; color: white; }
+        .type-badge.type-rock    { background-color: #b8ac77; color: white; }
+        .type-badge.type-steel   { background-color: #c5c5d1; color: #000; }
+        .type-badge.type-water   { background-color: #adc1f0; color: white; } */
         
         .pokemonTypes {
             margin: 4px 0;
@@ -880,6 +1048,27 @@
     gap: 8px;
     margin-top: 10px;
 }
+.filter-toggle-button {
+  padding: 4px 10px;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 2px solid #666;
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.filter-toggle-button:hover {
+  background-color: #ccc;
+}
+
+.filter-toggle-button.and-mode {
+  background-color: #c0392b;
+  color: white;
+  border-color: #c0392b;
+}
+
 
 .filter-radio {
     display: none;
@@ -975,14 +1164,6 @@
 }
 
 
-
-
-
-
-
-
-
-
 /* Shadow Pokemon - Darker purple aura with smoke effect */
 .pokemon-card.shadow {
     position: relative;
@@ -1003,199 +1184,111 @@
 }
 
     
-    /* Shiny Pokemon - Fixed sparkle background with gradient */
-    .pokemon-card.shiny {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(135deg, #2f00ff 0%, #992727 50%, #ddcb09 100%);
-    }
-    
 
-    .pokemon-card.shiny::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: 
-            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 80% 70%, rgba(255, 127, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 40% 80%, rgba(255, 255, 127, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 60% 20%, rgba(127, 127, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 30% 60%, rgba(127, 127, 127, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 70% 40%, rgba(64, 64, 64, 0.9) 0%, transparent 25%);
-        z-index: 0;
-        animation: twinkle 4.5s infinite;
-    }
-
-    .sparkles {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-
-.sparkles::before,
-.sparkles::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0.5) 20%,
-    rgba(255, 255, 255, 0) 40%
-  );
-  background-size: 200% 200%;
-  animation: sparkle 2s infinite;
-}
-
-.sparkles::after {
-  animation-delay: 1s;
-  background-image: radial-gradient(
-    rgba(255, 215, 0, 1) 0%,
-    rgba(255, 215, 0, 0.5) 20%,
-    rgba(255, 215, 0, 0) 40%
-  );
-}
-
-@keyframes sparkle {
-  0% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.5;
-  }
-}
-    
-    /* .pokemon-card.shiny::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: 
-            radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 80% 70%, rgba(255, 127, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 40% 80%, rgba(255, 255, 127, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 60% 20%, rgba(127, 127, 255, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 30% 60%, rgba(127, 127, 127, 0.9) 0%, transparent 25%),
-            radial-gradient(circle at 70% 40%, rgba(64, 64, 64, 0.9) 0%, transparent 25%);
-        z-index: 0;
-        animation: twinkle 4.5s infinite;
-    } */
-    
-    /* Lucky Pokemon - More dynamic golden clouds */
-    .pokemon-card.lucky {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(135deg, #fff 0%, #fff 70%, #fff9c4 100%);
-    }
-    
-    .pokemon-card.lucky::before,
-    .pokemon-card.lucky::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        right: -50%;
-        bottom: -50%;
-        background: 
-        radial-gradient(circle, rgba(255, 217, 0, 0.349) 0%, transparent 70%),
-            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(255, 215, 0, 0.3)" d="M30,30 Q50,10 70,30 T110,30 Q130,10 150,30 T190,30 Q210,10 230,30 T270,30 Q290,10 310,30 T350,30 Q370,10 390,30 T430,30 Q450,10 470,30 T510,30 Q530,10 550,30 T590,30 Q610,10 630,30 T670,30 Q690,10 710,30 T750,30 Q770,10 790,30 T830,30 Q850,10 870,30 T910,30 Q930,10 950,30 T990,30 Q1010,10 1030,30" transform="translate(-30,-30)"/></svg>');
-        background-size: 200px 200px;
-        z-index: 0;
-        animation: floatCloud 20s infinite linear;
-    }
-    
-    .pokemon-card.lucky::after {
-        animation: floatCloudReverse 25s infinite linear;
-        opacity: 0.7;
-        background-position: 100px 100px;
-    }
-    
-    /* Animations */
-    @keyframes pulseAura {
-        0% { opacity: 0.8; transform: scale(0.98); }
-        100% { opacity: 1; transform: scale(1.02); }
-    }
-    
-    @keyframes floatSmoke {
-        0% { background-position: 0 0; }
-        100% { background-position: 200px 200px; }
-    }
-    
-    @keyframes twinkle {
-        0%, 100% { opacity: 0.8; }
-        50% { opacity: .2; }
-    }
-    
-    @keyframes floatCloud {
-        0% { 
-            transform: translateX(0) translateY(0);
-            background-position: 0 0;
-        }
-        25% { 
-            transform: translateX(-20px) translateY(-15px);
-            background-position: 50px 50px;
-        }
-        50% { 
-            transform: translateX(0) translateY(-30px);
-            background-position: 100px 100px;
-        }
-        75% { 
-            transform: translateX(20px) translateY(-15px);
-            background-position: 150px 150px;
-        }
-        100% { 
-            transform: translateX(0) translateY(0);
-            background-position: 200px 200px;
-        }
-    }
-    
-    @keyframes floatCloudReverse {
-        0% { 
-            transform: translateX(0) translateY(0);
-            background-position: 200px 200px;
-        }
-        25% { 
-            transform: translateX(15px) translateY(20px);
-            background-position: 150px 150px;
-        }
-        50% { 
-            transform: translateX(30px) translateY(0);
-            background-position: 100px 100px;
-        }
-        75% { 
-            transform: translateX(15px) translateY(-20px);
-            background-position: 50px 50px;
-        }
-        100% { 
-            transform: translateX(0) translateY(0);
-            background-position: 0 0;
-        }
-    }
     
     /* Ensure content stays above backgrounds */
     .pokemon-card > * {
         position: relative;
         z-index: 1;
     }
+
+    .type-badge.stab {
+    border: 1px solid black;
+}
+
+.type-badge.faded {
+    filter: brightness(1.25) saturate(0.5);
+    }
+
+
 </style>
+
+<style>
+.card {
+  border-radius: 1.5rem;
+  border: 4px solid #a3e28f;
+  padding: 1rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+.card-cp {
+  font-size: 2rem;
+  font-weight: bold;
+  color: red;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.card-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+.card-gender {
+  font-size: 1.25rem;
+}
+.card-types {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+.card-moves {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.move {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  margin: 0.25rem 0;
+  font-weight: 600;
+  color: white;
+}
+.move.fast {
+  background-color: #69c350;
+}
+.move.charged {
+  background-color: #a640c9;
+}
+.move-placeholder {
+  height: 2rem;
+}
+.card-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ccc;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+}
+.stat img {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.25rem;
+}
+</style>
+
 </head>
 <body>
+  
     <h1>Pokémon GO Collection Viewer</h1>
     
     <div class="controls">
@@ -1212,6 +1305,7 @@
             <h3>Basic Filters</h3>
             <div class="filters-row">
                 <select id="sortBy">
+                    
                     <option value="number">Sort by Pokédex #</option>
                     <option value="cp">Sort by CP</option>
                     <option value="name">Sort by Name</option>
@@ -1219,7 +1313,7 @@
                     <option value="defence">Sort by Defense</option>
                     <option value="stamina">Sort by Stamina</option>
                 </select>
-
+                
                 
                 
                 <select id="filterStatus">
@@ -1229,30 +1323,35 @@
                     <option value="lucky">Lucky</option>
                 </select>
                 
-<div style="display: flex; align-items: center; gap: 8px;">
-  <input type="text" id="searchInput" placeholder="Search here...">
-  <button id="searchHelpBtn" title="Search help" style="padding: 4px 8px; font-weight: bold; font-size: 16px; cursor: pointer;">?</button>
-</div>
-</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="text" id="searchInput" placeholder="Search here...">
+                    <button id="searchHelpBtn" title="Search help" style="padding: 4px 8px; font-weight: bold; font-size: 16px; cursor: pointer;">?</button>
+                </div>
+            </div>
+            <div class="filter-row" style="margin-top: 10px;">
+                <label for="filterLogicToggle" style="margin-right: 8px;">Filter Mode:</label>
+                <button id="filterLogicToggle" class="filter-toggle-button" onclick="toggleFilterLogic()"title="Toggle between OR (match any filter) and AND (match all filters) mode">OR</button>
+              </div>
+              
                 
                 <div class="filter-radio-group">
                     <input type="button" id="filterNone" class="filter-radio" value="None" onclick="clearSpecialFilters()">
                     <label for="filterNone" class="filter-radio-label" title="Clear all special filters">None</label>
 
                     <input type="checkbox" id="filterShiny" class="filter-radio" onchange="filterAndSortPokemon()">
-                    <label for="filterShiny" class="filter-radio-label" title="Show only shiny Pokémon">Shinies</label>
+                    <label for="filterShiny" class="filter-radio-label" title="Show only ✨ shiny Pokémon">Shinies</label>
                     
                     <input type="checkbox" id="filterLucky" class="filter-radio" onchange="filterAndSortPokemon()">
-                    <label for="filterLucky" class="filter-radio-label" title="Show only lucky Pokémon">Luckys</label>
+                    <label for="filterLucky" class="filter-radio-label" title="Show only 🍀 lucky Pokémon">Luckys</label>
                     
                     <input type="checkbox" id="filterShadow" class="filter-radio" onchange="filterAndSortPokemon()">
-                    <label for="filterShadow" class="filter-radio-label" title="Show only shadow Pokémon">Shadows</label>
+                    <label for="filterShadow" class="filter-radio-label" title="Show only 😈 shadow Pokémon">Shadows</label>
                     
                     <input type="checkbox" id="filterPurified" class="filter-radio" onchange="filterAndSortPokemon()">
-                    <label for="filterPurified" class="filter-radio-label" title="Show only purified Pokémon">Purified</label>
+                    <label for="filterPurified" class="filter-radio-label" title="Show only 👼 purified Pokémon">Purified</label>
                     
                     <input type="checkbox" id="filterHundo" class="filter-radio" onchange="filterAndSortPokemon()">
-                    <label for="filterHundo" class="filter-radio-label" title="Show only 100% IV Pokémon">Hundos</label>
+                    <label for="filterHundo" class="filter-radio-label" title="Show only 💯 100% IV Pokémon">Hundos</label>
                     
                     <input type="checkbox" id="filterNundo" class="filter-radio" onchange="filterAndSortPokemon()">
                     <label for="filterNundo" class="filter-radio-label" title="Show only 0% IV Pokémon">Nundos</label>
@@ -1269,16 +1368,16 @@
                 <label for="filterRegion">Region:</label>
                 <select id="filterRegion">
                   <option value="">All Regions</option>
-                  <option value="Kanto">Kanto</option>
-                  <option value="Johto">Johto</option>
-                  <option value="Hoenn">Hoenn</option>
-                  <option value="Sinnoh">Sinnoh</option>
-                  <option value="Unova">Unova</option>
-                  <option value="Kalos">Kalos</option>
-                  <option value="Alola">Alola</option>
-                  <option value="Galar">Galar</option>
-                  <option value="Hisui">Hisui</option>
-                  <option value="Paldea">Paldea</option>
+                  <option value="KANTO">Kanto</option>
+                  <option value="JOHTO">Johto</option>
+                  <option value="HOENN">Hoenn</option>
+                  <option value="SINNOH">Sinnoh</option>
+                  <option value="UNOVA">Unova</option>
+                  <option value="KALOS">Kalos</option>
+                  <option value="ALOLA">Alola</option>
+                  <option value="GALARIAN">Galar</option>
+                  <option value="HISUI">Hisui</option>
+                  <option value="PALDEA">Paldea</option>
                 </select>
                 <div class="filters-row">
                     
@@ -1454,6 +1553,17 @@
         </div>
     </div>
 
+<!-- Include static data scripts -->
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/typeIcons.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/formTypeOverrides.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/pokeTypings.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/moveTypings.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/formRegionOverrides.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/specialSearchOptions.js"></script>
+<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/typingBackgrounds.js"></script>
+
+
+
     <script>
         console.log("Script loaded");
 
@@ -1475,6 +1585,7 @@ function closeSearchHelpModal() {
 
         
     // Global variables
+let useAndLogic = false; // false = OR (default), true = AND
 let pokemonData = {};
 let filteredPokemonIds = [];
 let selectedPokemonIds = new Set();
@@ -1487,76 +1598,7 @@ let masterUrl = "";
 let moveDropdownsLinked = true;
 
 
-// --- Master Typings Inline ---
-let pokeTypings = {
-    "BUG": [10, 11, 12, 13, 14, 15, 46, 47, 48, 49, 123, 127, 165, 166, 167, 168, 193, 204, 205, 212, 213, 214, 265, 266, 267, 268, 269, 283, 284, 290, 291, 292, 313, 314, 347, 348, 401, 402, 412, 413, 414, 415, 416, 451, 469, 540, 541, 542, 543, 544, 545, 557, 558, 588, 589, 595, 596, 616, 617, 632, 636, 637, 649, 664, 665, 666, 736, 737, 738, 742, 743, 751, 752, 767, 768, 794, 795, 824, 825, 826, 850, 851, 872, 873, 900, 917, 918, 919, 920, 953, 954, 988],
-    "DARK": [19, 20, 52, 53, 88, 89, 146, 197, 198, 211, 215, 228, 229, 248, 261, 262, 263, 264, 274, 275, 302, 318, 319, 332, 342, 359, 430, 434, 435, 442, 452, 461, 491, 503, 509, 510, 551, 552, 553, 559, 560, 570, 571, 624, 625, 629, 630, 633, 634, 635, 658, 675, 686, 687, 717, 720, 727, 799, 827, 828, 859, 860, 861, 862, 877, 892, 893, 904, 908, 920, 942, 943, 962, 983, 986, 993, 1001, 1002, 1003, 1004, 1005],
-    "DRAGON": [103, 147, 148, 149, 230, 329, 330, 334, 371, 372, 373, 380, 381, 384, 443, 444, 445, 483, 484, 487, 610, 611, 612, 621, 633, 634, 635, 643, 644, 646, 691, 696, 697, 704, 705, 706, 714, 715, 718, 776, 780, 782, 783, 784, 799, 800, 804, 840, 841, 842, 880, 882, 884, 885, 886, 887, 890, 895, 967, 978, 996, 997, 998, 1005, 1007, 1008, 1009, 1011, 1018, 1019, 1020, 1021],
-    "ELECTRIC": [25, 26, 74, 75, 76, 81, 82, 100, 101, 125, 135, 145, 170, 171, 172, 179, 180, 181, 239, 243, 309, 310, 311, 312, 403, 404, 405, 417, 462, 466, 479, 522, 523, 587, 595, 596, 602, 603, 604, 618, 642, 644, 694, 695, 702, 737, 738, 741, 777, 785, 796, 807, 835, 836, 848, 849, 871, 877, 880, 881, 894, 921, 922, 923, 938, 939, 940, 941, 989, 992, 995, 1008, 1021],
-    "FAIRY": [35, 36, 38, 39, 40, 78, 110, 122, 173, 174, 175, 176, 183, 184, 209, 210, 280, 281, 282, 298, 303, 439, 468, 546, 547, 669, 670, 671, 682, 683, 684, 685, 700, 702, 703, 707, 716, 719, 730, 742, 743, 755, 756, 764, 778, 785, 786, 787, 788, 801, 858, 859, 860, 861, 868, 869, 888, 905, 926, 927, 957, 958, 959, 985, 987, 1006, 1016],
-    "FIGHTING": [56, 57, 62, 66, 67, 68, 83, 106, 107, 128, 145, 214, 215, 236, 237, 256, 257, 286, 296, 297, 307, 308, 391, 392, 447, 448, 453, 454, 475, 499, 500, 532, 533, 534, 538, 539, 549, 559, 560, 619, 620, 638, 639, 640, 647, 648, 652, 674, 675, 701, 724, 739, 740, 759, 760, 766, 783, 784, 794, 795, 802, 852, 853, 865, 870, 889, 891, 892, 903, 914, 922, 923, 973, 979, 984, 988, 992, 1006, 1007, 1014],
-    "FIRE": [4, 5, 6, 37, 38, 58, 59, 77, 78, 105, 126, 128, 136, 146, 155, 156, 157, 218, 219, 228, 229, 240, 244, 250, 255, 256, 257, 322, 323, 324, 351, 383, 390, 391, 392, 467, 479, 485, 494, 498, 499, 500, 513, 514, 554, 555, 607, 608, 609, 631, 636, 637, 643, 653, 654, 655, 662, 663, 667, 668, 721, 725, 726, 727, 741, 757, 758, 776, 806, 813, 814, 815, 838, 839, 850, 851, 909, 910, 911, 935, 936, 937, 952, 994, 1004, 1017, 1020],
-    "FLYING": [6, 12, 16, 17, 18, 21, 22, 41, 42, 83, 84, 85, 123, 130, 142, 144, 145, 146, 149, 163, 164, 165, 166, 169, 176, 177, 178, 187, 188, 189, 193, 198, 207, 225, 226, 227, 249, 250, 267, 276, 277, 278, 279, 284, 291, 333, 334, 357, 373, 384, 396, 397, 398, 414, 415, 416, 425, 426, 430, 441, 458, 468, 469, 472, 479, 492, 519, 520, 521, 527, 528, 561, 566, 567, 580, 581, 587, 627, 628, 629, 630, 641, 642, 645, 661, 662, 663, 666, 701, 714, 715, 717, 722, 723, 731, 732, 733, 741, 774, 797, 821, 822, 823, 845, 905, 931, 940, 941, 962, 973, 993],
-    "GHOST": [92, 93, 94, 105, 157, 200, 222, 292, 302, 353, 354, 355, 356, 425, 426, 429, 442, 477, 478, 479, 487, 562, 563, 570, 571, 592, 593, 607, 608, 609, 622, 623, 679, 680, 681, 708, 709, 710, 711, 720, 724, 741, 769, 770, 778, 781, 792, 800, 802, 806, 854, 855, 864, 867, 885, 886, 887, 897, 898, 902, 911, 937, 946, 947, 971, 972, 979, 987, 999, 1000, 1012, 1013, 1025],
-    "GRASS": [1, 2, 3, 43, 44, 45, 46, 47, 69, 70, 71, 101, 102, 103, 114, 152, 153, 154, 182, 187, 188, 189, 191, 192, 251, 252, 253, 254, 270, 271, 272, 273, 274, 275, 285, 286, 315, 331, 332, 345, 346, 357, 387, 388, 389, 406, 407, 413, 420, 421, 455, 459, 460, 465, 470, 479, 492, 495, 496, 497, 511, 512, 540, 541, 542, 546, 547, 548, 549, 556, 585, 586, 590, 591, 597, 598, 640, 650, 651, 652, 672, 673, 708, 709, 710, 711, 722, 723, 724, 753, 754, 755, 756, 761, 762, 763, 781, 787, 798, 810, 811, 812, 829, 830, 840, 841, 842, 893, 898, 906, 907, 908, 928, 929, 930, 946, 947, 948, 949, 951, 952, 986, 1001, 1010, 1011, 1012, 1013, 1017, 1019],
-    "GROUND": [27, 28, 31, 34, 50, 51, 74, 75, 76, 95, 104, 105, 111, 112, 194, 195, 207, 208, 220, 221, 231, 232, 246, 247, 259, 260, 290, 322, 323, 328, 329, 330, 339, 340, 343, 344, 383, 389, 413, 423, 443, 444, 445, 449, 450, 464, 472, 473, 529, 530, 536, 537, 551, 552, 553, 562, 618, 622, 623, 645, 660, 718, 749, 750, 769, 770, 843, 844, 867, 901, 948, 949, 980, 984, 989, 990, 1003],
-    "ICE": [27, 28, 37, 38, 87, 91, 122, 124, 131, 144, 215, 220, 221, 225, 238, 351, 361, 362, 363, 364, 365, 378, 459, 460, 461, 471, 473, 478, 479, 554, 555, 582, 583, 584, 613, 614, 615, 646, 698, 699, 712, 713, 740, 866, 872, 873, 875, 881, 883, 896, 898, 974, 975, 991, 996, 997, 998, 1002],
-    "NORMAL": [16, 17, 18, 19, 20, 21, 22, 39, 40, 52, 53, 83, 84, 85, 108, 113, 115, 128, 132, 133, 137, 143, 161, 162, 163, 164, 174, 190, 203, 206, 216, 217, 233, 234, 235, 241, 242, 263, 264, 276, 277, 287, 288, 289, 293, 294, 295, 298, 300, 301, 327, 333, 335, 351, 352, 396, 397, 398, 399, 400, 424, 427, 428, 431, 432, 440, 441, 446, 463, 474, 486, 493, 504, 505, 506, 507, 508, 519, 520, 521, 531, 570, 571, 572, 573, 585, 586, 626, 627, 628, 648, 659, 660, 661, 667, 668, 676, 694, 695, 731, 732, 733, 734, 735, 759, 760, 765, 772, 773, 775, 780, 819, 820, 831, 832, 862, 876, 899, 901, 915, 916, 924, 925, 928, 929, 930, 931, 944, 945, 967, 981, 982, 1024],
-    "POISON": [1, 2, 3, 13, 14, 15, 23, 24, 29, 30, 31, 32, 33, 34, 41, 42, 43, 44, 45, 48, 49, 69, 70, 71, 72, 73, 80, 88, 89, 92, 93, 94, 109, 110, 167, 168, 169, 194, 199, 211, 215, 269, 315, 316, 317, 336, 406, 407, 434, 435, 451, 452, 453, 454, 543, 544, 545, 568, 569, 590, 591, 690, 691, 747, 748, 757, 758, 793, 803, 804, 848, 849, 890, 903, 904, 944, 945, 965, 966, 969, 970, 980, 994, 1014, 1015, 1016, 1025],
-    "PSYCHIC": [26, 63, 64, 65, 77, 78, 79, 80, 96, 97, 102, 103, 121, 122, 124, 144, 150, 151, 177, 178, 196, 199, 201, 202, 203, 238, 249, 251, 280, 281, 282, 307, 308, 325, 326, 337, 338, 343, 344, 358, 360, 374, 375, 376, 380, 381, 385, 386, 433, 436, 437, 439, 475, 480, 481, 482, 488, 494, 517, 518, 527, 528, 555, 561, 574, 575, 576, 577, 578, 579, 605, 606, 628, 648, 655, 677, 678, 686, 687, 720, 741, 765, 779, 786, 789, 790, 791, 792, 800, 825, 826, 856, 857, 858, 866, 876, 898, 899, 936, 954, 955, 956, 976, 981, 985, 1010, 1015, 1022, 1023],
-    "ROCK": [58, 59, 74, 75, 76, 95, 111, 112, 138, 139, 140, 141, 142, 185, 213, 219, 222, 246, 247, 248, 299, 304, 305, 306, 337, 338, 345, 346, 347, 348, 369, 377, 408, 409, 410, 411, 438, 464, 476, 524, 525, 526, 557, 558, 564, 565, 566, 567, 639, 688, 689, 696, 697, 698, 699, 703, 713, 719, 744, 745, 774, 793, 805, 834, 837, 838, 839, 874, 900, 932, 933, 934, 950, 969, 970, 995, 1017, 1022],
-    "STEEL": [27, 28, 50, 51, 52, 81, 82, 205, 208, 212, 227, 303, 304, 305, 306, 374, 375, 376, 379, 385, 395, 410, 411, 413, 436, 437, 448, 462, 476, 483, 485, 530, 589, 597, 598, 599, 600, 601, 618, 624, 625, 632, 638, 649, 679, 680, 681, 705, 706, 707, 777, 791, 797, 798, 800, 801, 805, 808, 809, 823, 863, 878, 879, 884, 888, 889, 957, 958, 959, 965, 966, 968, 983, 990, 1000, 1018, 1023],
-    "WATER": [7, 8, 9, 54, 55, 60, 61, 62, 72, 73, 79, 80, 86, 87, 90, 91, 98, 99, 116, 117, 118, 119, 120, 121, 128, 129, 130, 131, 134, 138, 139, 140, 141, 158, 159, 160, 170, 171, 183, 184, 186, 194, 195, 199, 211, 222, 223, 224, 226, 230, 245, 258, 259, 260, 270, 271, 272, 278, 279, 283, 318, 319, 320, 321, 339, 340, 341, 342, 349, 350, 351, 363, 364, 365, 366, 367, 368, 369, 370, 382, 393, 394, 395, 400, 418, 419, 422, 423, 456, 457, 458, 479, 484, 489, 490, 501, 502, 503, 515, 516, 535, 536, 537, 550, 564, 565, 580, 581, 592, 593, 594, 647, 656, 657, 658, 688, 689, 690, 692, 693, 721, 728, 729, 730, 746, 747, 748, 751, 752, 767, 768, 771, 779, 788, 816, 817, 818, 833, 834, 845, 846, 847, 882, 883, 892, 902, 912, 913, 914, 960, 961, 963, 964, 976, 977, 978, 991, 1009, 1017]
-    };
 
-let specialSearchOptions = {
-    "BABY": [172,173,174,175,236,238,239,240,298,360,406,433,438,439,440,446,447,458],
-    "LEGENDARY": [144,145,146,150,243,244,245,249,250,377,378,379,380,381,382,383,384,480,481,482,483,484,485,486,487,488,493,638,639,640,641,642,643,644,645,646,716,717,718,772,773,785,786,787,789,790,791,792,800,888,889,890,891,892,894,895,898,905,1001,1002,1003,1004,1007,1008,1009,1010,1014,1015,1016,1017,1020,1021,1022,1023,1024],
-    "MYTHICAL": [151,251,385,386,489,490,491,492,494,647,648,649,719,720,721,801,802,807,808,809,893,1025],
-    "STAGEONE": [1,4,7,10,13,16,19,21,23,25,27,29,32,35,37,39,41,43,46,48,50,52,54,56,58,60,63,66,69,72,74,77,79,81,83,84,86,88,90,92,95,96,98,100,102,104,106,107,108,109,111,113,114,115,116,118,120,122,123,124,125,126,127,128,129,131,132,133,137,138,140,142,143,144,145,146,147,150,151,152,155,158,161,163,165,167,170,175,177,179,185,187,190,191,193,194,198,200,201,203,204,206,207,209,211,213,214,215,216,218,220,222,223,225,226,227,228,231,234,235,237,241,243,244,245,246,249,250,251,252,255,258,261,263,265,270,273,276,278,280,283,285,287,290,293,296,298-300,302-304,307,309,311,312,313,314,316,318,320,322,324,325,327,328,331,333,335,336,337,338,339,341,343,345,347,349,351,352,353,355,357,359-361,363,366,369,370,371,374,377,387,390,393,396,399,401,403,406,408,410,412,415,417,418,420,422,425,427,431,433,434,436,441-443,447,449,451,453,455,456,459,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,498,501,504,506,509,511,513,515,517,519,522,524,527,529,531,532,535,538,539,540,543,546,548,550,551,554,556,557,559,561,562,564,566,568,570,572,574,577,580,582,585,587,588,590,592,594,595,597,599,602,605,607,610,613,615,616,618,619,621,622,624,626,627,629,631,633,636,638,639,640,641,642,643,644,645,646,647,648,649,650,653,656,659,661,664,667,669,672,674,676,677,679,682,684,686,688,690,692,694,696,698,701,702,703,704,707,708,710,712,714,716,717,718,719,720,721,722,725,728,731,734,736,739,741,742,744,746,747,749,751,753,755,757,759,761,764,765,766,767,769,771,772,774,775,776,777,778,779,780,781,782,785,786,787,788,789,793,794,795,796,797,798,799,800,801,802,803,805,806,807,808,810,813,816,819,821,824,827,829,831,833,835,837,840,843,845,846,848,850,852,854,856,859,868,870,871,872,874,875,876,877,878,880,881,882,883,884,885,888,889,890,891,893,894,895,896,897,898,905,906,909,912,915,917,919,921,924,926,928,931,932,935,938,940,942,944,946,948,950,951,953,955,957,960,962,963,965,967,968,969,971,973,974,976,977,978,984,985,986,987,988,989,990,991,992,993,994,995,996,999,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1012,1014,1015,1016,1017,1020,1021,1022,1023,1024,1025],
-    "STAGETWO": [2,5,8,11,14,17,20,22,24,26,28,30,33,36,38,40,42,44,47,49,51,53,55,57,59,61,64,67,70,73,75,78,80,82,85,87,89,91,93,97,99,101,103,105,110,112,117,119,121,130,134-136,139,141,148,153,156,159,162,164,166,168,171,176,178,180,183,188,192,195,196,197,199,202,205,208,210,212,217,219,221,224,229,232-233,242,247,253,256,259,262,264,266,268,271,274,277,279,281,284,286,288,291,292,294,297,301,305,308,310,315,317,319,321,323,326,329,332,334,340,342,344,346,348,350,354,356,358,362,364,367,368,372,375,388,391,394,397,400,402,404,409,411,413,414,416,419,421,423,424,426,428,429,430,432,435,437,444,448,450,452,454,457,460-461,463,465,466,467,469-472,476,478,496,499,502,505,507,510,512,514,516,518,520,523,525,528,530,533,536,541,544,547,549,552,555,558,560,563,565,567,569,571,573,575,578,581,583,586,589,591,593,596,598,600,603,606,608,611,614,617,620,623,625,628,630,634,637,651,654,657,660,662,665,668,670,673,675,678,680,683,685,687,689,691,693,695,697,699,700,705,709,711,713,715,723,726,729,732,735,737,740,743,745,748,750,752,754,756,758,760,762,768,770,773,783,790,804,809,811,814,817,820,822,825,828,830,832,834,836,838,841,842,844,847,849,851,853,855,857,860,863-867,869,873,879,886,892,899,900,902,903,904,907,910,913,916,918,920,922,925,927,929,933,936,937,939,941,943,945,947,949,952,954,956,958,961,964,966,970,972,975,980,981,982,997,1000,1011,1013,1018],
-    "STAGETHREE": [3,6,9,12,15,18,31,34,45,62,65,68,71,76,94,149,154,157,160,169,181,182,184,186,189,230,248,254,257,260,267,269,272,275,282,289,295,306,330,365,373,376,389,392,395,398,405,407,445,462,464,468,473-475,477,497,500,503,508,521,526,534,537,542,545,553,576,579,584,601,604,609,612,635,652,655,658,663,666,671,681,706,724,727,730,733,738,763,784,791-792,812,815,818,823,826,839,858,861-862,887,901,908,911,914,923,930,934,959,979,983,998,1019],
-    "STARTERS": [1,2,3,4,5,6,7,8,9,152,153,154,155,156,157,158,159,160,252,253,254,255,256,257,258,259,260,387,388,389,390,391,392,393,394,395,495,496,497,498,499,500,501,502,503,650,651,652,653,654,655,656,657,658,722,723,724,725,726,727,728,729,730,810,811,812,813,814,815,816,817,818,906,907,908,909,910,911,912,913,914],
-    "TRADEEVOLVE": [64,67,75,93,525,533,588,616,708,710]
-}
-let moveTypings = {
-    "BUG": ["BUG_BITE_FAST", "FURY_CUTTER_FAST", "INFESTATION_FAST", "STRUGGLE_BUG_FAST",
-                "BUG_BUZZ", "FELL_STINGER", "LUNGE", "MEGAHORN", "SIGNAL_BEAM", "SILVER_WIND", "X_SCISSOR"],
-    "DARK": ["BITE_FAST", "FEINT_ATTACK_FAST", "SNARL_FAST", "SUCKER_PUNCH_FAST",
-                "BRUTAL_SWING", "CRUNCH", "DARKEST_LARIAT", "DARK_PULSE", "FOUL_PLAY", "NIGHT_SLASH", "OBSTRUCT", "PAYBACK", "BADDY_BAD"],
-    "DRAGON": ["DRAGON_BREATH_FAST", "DRAGON_TAIL_FAST",
-                "BREAKING_SWIPE", "DRACO_METEOR", "DRAGON_CLAW", "DRAGON_PULSE", "OUTRAGE", "ROAR_OF_TIME", "SPACIAL_REND", "TWISTER"],
-    "ELECTRIC": ["CHARGE_BEAM_FAST", "SPARK_FAST", "THUNDER_FANG_FAST", "THUNDER_SHOCK_FAST", "VOLT_SWITCH_FAST",
-                    "AURA_WHEEL", "DISCHARGE", "FUSION_BOLT", "PARABOLIC_CHARGE", "TECHNO_BLAST_SHOCK", "THUNDER", "THUNDERBOLT", "THUNDER_PUNCH", "VOLT_TACKLE", "WILD_CHARGE", "WILDBOLT_STORM", "ZAP_CANNON"],
-    "FAIRY": ["CHARM_FAST", "FAIRY_WIND_FAST", "GEOMANCY_FAST",
-                "DAZZLING_GLEAM", "DISARMING_VOICE", "DRAINING_KISS", "MOONBLAST", "NATURES_MADNESS", "PLAY_ROUGH", "SPRINGTIDE_STORM"],
-    "FIGHTING": ["COUNTER_FAST", "DOUBLE_KICK_FAST", "FORCE_PALM_FAST", "KARATE_CHOP_FAST", "LOW_KICK_FAST", "ROCK_SMASH_FAST",
-                    "AURA_SPHERE", "BRICK_BREAK", "CLOSE_COMBAT", "CROSS_CHOP", "DRAIN_PUNCH", "DYNAMIC_PUNCH", "FLYING_PRESS", "FOCUS_BLAST", "HIGH_JUMP_KICK", "LOW_SWEEP", "POWER_UP_PUNCH", "SACRED_SWORD", "SUBMISSION", "SUPER_POWER", "UPPER_HAND"],
-    "FIRE": ["EMBER_FAST", "FIRE_FANG_FAST", "FIRE_SPIN_FAST", "INCINERATE_FAST",
-                "BLAST_BURN", "BLAZE_KICK", "FIRE_BLAST", "FIRE_PUNCH", "FLAME_BURST", "FLAME_CHARGE", "FLAME_WHEEL", "FLAMETHROWER", "FUSION_FLARE", "HEAT_WAVE", "MAGMA_STORM", "MYSTICAL_FIRE", "OVERHEAT", "SACRED_FIRE", "TECHNO_BLAST_BURN", "TORCH_SONG", "V_CREATE", "WEATHER_BALL_FIRE"],
-    "FLYING": ["AIR_SLASH_FAST", "PECK_FAST", "GUST_FAST", "WING_ATTACK_FAST",
-                "ACROBATICS", "AERIAL_ACE", "AEROBLAST", "AIR_CUTTER", "BLEAKWIND_STORM", "BRAVE_BIRD", "DRAGON_ASCENT", "DRILL_PECK", "FEATHER_DANCE", "FLY", "HURRICANE", "OBLIVION_WING", "SKY_ATTACK"],
-    "GHOST": ["ASTONISH_FAST", "HEX_FAST", "LICK_FAST", "SHADOW_CLAW_FAST",
-                "MOON_GEIST_BEAM", "NIGHT_SHADE", "OMINOUS_WIND", "POLTERGEIST", "RAGE_FIST", "SHADOW_BALL", "SHADOW_BONE", "SHADOW_FORCE", "SHADOW_PUNCH", "SHADOW_SNEAK", "SPIRIT_SHACKLE"],
-    "GRASS": ["BULLET_SEED_FAST", "LEAFAGE_FAST", "MAGICAL_LEAF_FAST", "RAZOR_LEAF_FAST", "VINE_WHIP_FAST",
-                "ENERGY_BALL", "FLOWER_TRICK", "FRENZY_PLANT", "GIGA_DRAIN", "GRASS_KNOT", "LEAF_BLADE", "LEAF_STORM", "LEAF_TORNADO", "MEGA_DRAIN", "PETAL_BLIZZARD", "POWER_WHIP", "SEED_BOMB", "SEED_FLARE", "SOLAR_BEAM", "TRAILBLAZE"],
-    "GROUND": ["MUD_SHOT_FAST", "MUD_SLAP_FAST", "SAND_ATTACK_FAST",
-                "BONE_CLUB", "BULLDOZE", "DIG", "DRILL_RUN", "EARTH_POWER", "EARTHQUAKE", "HIGH_HORSEPOWER", "MUD_BOMB", "PRECIPICE_BLADES", "SAND_TOMB", "SANDSEAR_STORM", "SCORCHING_SANDS"],
-    "ICE": ["FROST_BREATH_FAST", "ICE_FANG_FAST", "ICE_SHARD_FAST", "POWDER_SNOW_FAST",
-                "AURORA_BEAM", "AVALANCHE", "BLIZZARD", "FREEZE_SHOCK", "GLACIATE", "ICE_BEAM", "ICE_BURN", "ICE_PUNCH", "ICICLE_SPEAR", "ICY_WIND", "TECHNO_BLAST_CHILL", "TRIPLE_AXEL", "WEATHER_BALL_ICE"],
-    "NORMAL": ["CUT_FAST", "HIDDEN_POWER_FAST", "LOCK_ON_FAST", "POUND_FAST", "PRESENT_FAST", "QUICK_ATTACK_FAST", "SCRATCH_FAST", "TACKLE_FAST", "TAKE_DOWN_FAST", "YAWN_FAST",
-                "BODY_SLAM", "BOOMBURST", "FRUSTRATION", "GIGA_IMPACT", "HORN_ATTACK", "HYPER_BEAM", "LAST_RESORT", "REST", "RETURN", "SKULL_BASH", "STOMP", "STRUGGLE", "SWIFT", "TECHNO_BLAST_NORMAL", "TRI_ATTACK", "VISE_GRIP", "WRAP"],
-    "POISON": ["ACID_FAST", "POISON_JAB_FAST", "POISON_STING_FAST",
-                "ACID_SPRAY", "CROSS_POISON", "GUNK_SHOT", "POISON_FANG", "SLUDGE", "SLUDGE_BOMB", "SLUDGE_WAVE"],
-    "PSYCHIC": ["CONFUSION_FAST", "EXTRASENSORY_FAST", "PSYCHO_CUT_FAST", "PSYWAVE_FAST", "ZEN_HEADBUTT_FAST",
-                "FUTURE_SIGHT", "HEART_STAMP", "LUSTER_PURGE", "MIRROR_COAT", "MIST_BALL", "PSYBEAM", "PSYCHIC", "PSYCHIC_FANGS", "PSYCHO_BOOST", "PSYSHOCK", "PSYSTRIKE", "SYNCHRONOISE"],
-    "ROCK": ["ROCK_THROW_FAST", "ROLLOUT_FAST", "SMACK_DOWN_FAST",
-                "ANCIENT_POWER", "METEOR_BEAM", "POWER_GEM", "ROCK_BLAST", "ROCK_SLIDE", "ROCK_TOMB", "ROCK_WRECKER", "STONE_EDGE", "WEATHER_BALL_ROCK"],
-    "STEEL": ["BULLET_PUNCH_FAST", "IRON_TAIL_FAST", "METAL_CLAW_FAST", "METAL_SOUND_FAST", "STEEL_WING_FAST",
-                "BEHEMOTH_BASH", "BEHEMOTH_BLADE", "DOOM_DESIRE", "DOUBLE_IRON_BASH", "FLASH_CANNON", "GYRO_BALL", "HEAVY_SLAM", "IRON_HEAD", "MAGNET_BOMB", "METEOR_MASH", "MIRROR_SHOT", "SUNSTEEL_STRIKE"],
-    "WATER": ["BUBBLE_FAST", "SPLASH_FAST", "WATER_GUN_FAST", "WATER_SHURIKEN_FAST", "WATERFALL_FAST",
-                "AQUA_JET", "AQUA_TAIL", "BRINE", "BUBBLE_BEAM", "CRABHAMMER", "HYDRO_CANNON", "HYDRO_PUMP", "LIQUIDATION", "MUDDY_WATER", "OCTAZOOKA", "ORIGIN_PULSE", "RAZOR_SHELL", "SCALD", "SPARKLING_ARIA", "SURF", "TECHNO_BLAST_DOUSE", "WATER_PULSE", "WEATHER_BALL_WATER"]
-};
 
 let regionTypings = {
     "KANTO": [1-151],
@@ -1632,9 +1674,7 @@ const elements = {
 };
 
 const TYPE_LIST = [
-  "Normal", "Fire", "Water", "Electric", "Grass", "Ice",
-  "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug",
-  "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+  "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
 ];
 
 const selectedTypes = new Set();
@@ -1673,6 +1713,20 @@ function renderTypeFilters() {
 renderTypeFilters();
 
 // Utility functions
+function toggleFilterLogic() {
+  useAndLogic = !useAndLogic;
+
+  const btn = document.getElementById("filterLogicToggle");
+  btn.textContent = useAndLogic ? "AND" : "OR";
+  btn.classList.toggle("and-mode", useAndLogic);
+  btn.title = useAndLogic
+    ? "must match all filters"
+    : "match any filter";
+
+  filterAndSortPokemon();
+}
+
+
 
 function updateDependentMoveOptions() {
     if (!moveDropdownsLinked) return; // Do nothing if not linked
@@ -1834,17 +1888,18 @@ function formatMoveName(move) {
     .replace(/\b\w/g, c => c.toUpperCase());
 }
 
-function createMoveBadge(moveName) {
+function createMoveBadge(moveName, monTypes = []) {
   const type = getMoveType(moveName);
   const formatted = formatMoveName(moveName);
-  return `<span class="type-badge type-${type}">${formatted}</span>`;
+  const stabMatch = monTypes.includes(type.toUpperCase());
+return `<span class="type-badge type-${type}${stabMatch ? " stab" : " faded"}">${formatted}</span>`;
 }
 
 
 function getGenderSymbol(gender) {
     if (gender === 'MALE') return '<span class="gender-male">♂</span>';
     if (gender === 'FEMALE') return '<span class="gender-female">♀</span>';
-    return '<span class="gender-neutral">⚪</span>';
+    return '';
 }
 
 function calculateIVPercentage(attack, defence, stamina) {
@@ -1852,94 +1907,25 @@ function calculateIVPercentage(attack, defence, stamina) {
     return ((attack + defence + stamina) / 45 * 100).toFixed(2);
 }
 
-const formTypeOverrides = {
-    "19_RATTATA_ALOLA": ["DARK","NORMAL"],"19_RATTATA_NORMAL": ["NORMAL"],
-    "20_RATICATE_ALOLA": ["DARK","NORMAL"],"20_RATICATE_NORMAL": ["NORMAL"],
-    "27_SANDSHREW_ALOLA": ["ICE","STEEL"],"27_SANDSHREW_NORMAL": ["GROUND"],
-    "28_SANDSLASH_ALOLA": ["ICE","STEEL"],"28_SANDSLASH_NORMAL": ["GROUND"],
-    "37_VULPIX_NORMAL": ["FIRE"], "37_VULPIX_ALOLA": ["ICE"],
-    "38_NINETALES_NORMAL": ["FIRE"], "38_NINETALES_ALOLA": ["ICE","FAIRY"],
-    "50_DIGLETT_NORMAL": ["GROUND"], "50_DIGLETT_ALOLA": ["GROUND","STEEL"],
-    "51_DUGTRIO_NORMAL": ["GROUND"], "51_DUGTRIO_ALOLA": ["GROUND","STEEL"],
-    "52_MEOWTH_ALOLA": ["DARK"],"52_MEOWTH_NORMAL": ["NORMAL"],"52_MEOWTH_GALARIAN": ["STEEL"],
-    "53_PERSIAN_NORMAL": ["NORMAL"], "53_PERSIAN_ALOLA": ["DARK"],
-    "58_GROWLITHE_NORMAL": ["FIRE"], "58_GROWLITHE_HISUIAN": ["FIRE","ROCK"],
-    "59_ARCANINE_NORMAL": ["FIRE"], "59_ARCANINE_HISUIAN": ["FIRE","ROCK"],
-    "74_GEODUDE_NORMAL": ["ROCK","GROUND"], "74_GEODUDE_ALOLA": ["ROCK","ELECTRIC"],
-    "75_GRAVELER_NORMAL": ["ROCK","GROUND"], "75_GRAVELER_ALOLA": ["ROCK","ELECTRIC"],
-    "76_GOLEM_NORMAL": ["ROCK","GROUND"], "76_GOLEM_ALOLA": ["ROCK","ELECTRIC"],
-    "77_PONYTA_NORMAL": ["FIRE"], "77_PONYTA_GALARIAN": ["PSYCHIC"],
-    "78_RAPIDASH_NORMAL": ["FIRE"], "78_RAPIDASH_GALARIAN": ["PSYCHIC","FAIRY"],
-    "79_SLOWPOKE_NORMAL": ["WATER","PSYCHIC"], "79_SLOWPOKE_GALARIAN": ["PSYCHIC"],
-    "80_SLOWBRO_NORMAL": ["WATER","PSYCHIC"], "80_SLOWBRO_GALARIAN": ["POISON","PSYCHIC"],
-    "83_FARFETCHD_NORMAL": ["NORMAL","FLYING"], "83_FARFETCHD_GALARIAN": ["FIGHTING"],
-    "88_GRIMER_NORMAL": ["POISON"], "88_GRIMER_ALOLA": ["POISON","DARK"],
-    "89_MUK_NORMAL": ["POISON"], "89_MUK_ALOLA": ["POISON","DARK"],
-    "100_VOLTORB_NORMAL": ["ELECTRIC"], "100_VOLTORB_HISUIAN": ["ELECTRIC","GRASS"],
-    "101_ELECTRODE_NORMAL": ["ELECTRIC"], "101_ELECTRODE_HISUIAN": ["ELECTRIC","GRASS"],
-    "103_EXEGGUTOR_NORMAL": ["GRASS","PSYCHIC"], "103_EXEGGUTOR_ALOLA": ["GRASS","DRAGON"],
-    "105_MAROWAK_NORMAL": ["GROUND"], "105_MAROWAK_ALOLA": ["FIRE","GHOST"],
-    "110_WEEZING_NORMAL": ["POISON"], "110_WEEZING_GALARIAN": ["POISON","FAIRY"],
-    "122_MR_MIME_NORMAL": ["PSYCHIC","FAIRY"], "122_MR_MIME_GALARIAN": ["ICE","PSYCHIC"],
-    "128_TAUROS_PALDEA_COMBAT": ["FIGHTING"], "128_TAUROS_PALDEA_BLAZE": ["FIGHTING","FIRE"], "128_TAUROS_PALDEA_AQUA": ["FIGHTING","WATER"], "128_TAUROS_NORMAL": ["NORMAL"],
-    "144_ARTICUNO_NORMAL": ["ICE","FLYING"], "144_ARTICUNO_GALARIAN": ["PSYCHIC","FLYING"],
-    "145_ZAPDOS_NORMAL": ["ELECTRIC","FLYING"], "145_ZAPDOS_GALARIAN": ["FIGHTING","FLYING"],
-    "146_MOLTRES_NORMAL": ["FIRE","FLYING"], "146_MOLTRES_GALARIAN": ["DARK","FLYING"],
-    "157_TYPHLOSION_NORMAL": ["FIRE"], "157_TYPHLOSION_HISUIAN": ["FIRE","GHOST"],
-    "194_WOOPER_NORMAL": ["WATER","GROUND"], "194_WOOPER_PALDEA": ["POISON","GROUND"],
-    "199_SLOWKING_NORMAL": ["WATER","PSYCHIC"], "199_SLOWKING_GALARIAN": ["POISON","PSYCHIC"],
-    "211_QWILFISH_NORMAL": ["WATER","POISON"], "211_QWILFISH_HISUIAN": ["DARK","POISON"],
-    "215_SNEASEL_NORMAL": ["DARK","ICE"], "215_SNEASEL_HISUIAN": ["FIGHTING","POISON"],
-    "222_CORSOLA_NORMAL": ["WATER","ROCK"], "222_CORSOLA_GALARIAN": ["GHOST"],
-    "263_ZIGZAGOON_NORMAL": ["NORMAL"], "263_ZIGZAGOON_GALARIAN": ["DARK","NORMAL"],
-    "264_LINOONE_NORMAL": ["NORMAL"], "264_LINOONE_GALARIAN": ["DARK","NORMAL"],
-    "351_CASTFORM_NORMAL": ["NORMAL"],"351_CASTFORM_SNOWY": ["ICE"],"351_CASTFORM_RAINY": ["WATER"],"351_CASTFORM_SUNNY": ["FIRE"],
-    "413_WORMADAM_TRASH": ["BUG","STEEL"],"413_WORMADAM_PLANT": ["BUG","GRASS"],"413_WORMADAM_SANDY": ["BUG","GROUND"],
-    "479_ROTOM_NORMAL": ["GHOST","ELECTRIC"],"479_ROTOM_FAN": ["FLYING","ELECTRIC"],"479_ROTOM_WASH": ["WATER","ELECTRIC"],"479_ROTOM_FROST": ["ICE","ELECTRIC"],"479_ROTOM_HEAT": ["FIRE","ELECTRIC"],"479_ROTOM_MOW": ["GRASS","ELECTRIC"],
-    "503_SAMUROTT_NORMAL": ["WATER"], "503_SAMUROTT_HISUIAN": ["WATER","DARK"],
-    "549_LILLIGANT_NORMAL": ["GRASS"], "549_LILLIGANT_HISUIAN": ["GRASS","FIGHTING"],
-    "554_DARUMAKA_NORMAL": ["FIRE"], "554_DARUMAKA_GALARIAN": ["ICE"],
-    "555_DARMANITAN_STANDARD": ["FIRE"], "555_DARMANITAN_GALARIAN_STANDARD": ["ICE"],
-    "562_YAMASK_NORMAL": ["GHOST"], "562_YAMASK_GALARIAN": ["GROUND","GHOST"],
-    "570_ZORUA_NORMAL": ["DARK"], "570_ZORUA_HISUIAN": ["NORMAL","GHOST"],
-    "571_ZOROARK_NORMAL": ["DARK"], "571_ZOROARK_HISUIAN": ["NORMAL","GHOST"],
-    "618_STUNFISK_NORMAL": ["GROUND","ELECTRIC"], "618_STUNFISK_GALARIAN": ["GROUND","STEEL"],
-    "628_BRAVIARY_NORMAL": ["NORMAL","FLYING"], "628_BRAVIARY_HISUIAN": ["PSYCHIC","FLYING"],
-    "705_SLIGGOO_NORMAL": ["DRAGON"], "705_SLIGGOO_HISUIAN": ["STEEL","DRAGON"],
-    /*-----Begin _NORMAL form not implemented---*/
-    "26_RAICHU": ["ELECTRIC"], "26_RAICHU_NORMAL": ["ELECTRIC"], "26_RAICHU_ALOLA": ["PSYCHIC","ELECTRIC"],
-    "706_GOODRA": ["DRAGON"], "706_GOODRA_HISUIAN": ["STEEL","DRAGON"],
-    "713_AVALUGG": ["ICE"], "713_AVALUGG_HISUIAN": ["ICE","ROCK"],
-    "724_DECIDUEYE": ["GRASS","GHOST"], "724_DECIDUEYE_HISUIAN": ["GRASS","FIGHTING"],
-    /*-----End _NORMAL form not implemented---*/
-    "720_HOOPA_CONFINED": ["PSYCHIC","GHOST"],"720_HOOPA_UNBOUND": ["PSYCHIC","DARK"],
-    "741_ORICORIO_PAU": ["FLYING","PSYCHIC"],"741_ORICORIO_POMPOM": ["FLYING","ELECTRIC"],"741_ORICORIO_SENSU": ["FLYING","GHOST"],"741_ORICORIO_BAILE": ["FLYING","FIRE"],
-    "800_NECROZMA_NORMAL": ["PSYCHIC"],"800_NECROZMA_DUSK_MANE": ["PSYCHIC","STEEL"],"800_NECROZMA_DAWN_WINGS": ["PSYCHIC","GHOST"],"800_NECROZMA_ULTRA": ["PSYCHIC","DRAGON"],
-    "888_ZACIAN_HERO": ["FAIRY"],"888_ZACIAN_CROWNED_SWORD": ["FAIRY","STEEL"],
-    "889_ZAMAZENTA_HERO": ["FIGHTING"],"889_ZAMAZENTA_CROWNED_SHIELD": ["FIGHTING","STEEL"],
 
+const typeBadgeNumbers = {
+  NORMAL: 18,  FIGHTING: 19,  FLYING: 20,  POISON: 21,  GROUND: 22,  ROCK: 23,
+  BUG: 24,  GHOST: 25,  STEEL: 26,  FIRE: 27,  WATER: 28,  GRASS: 29,
+  ELECTRIC: 30,  PSYCHIC: 31,  ICE: 32,  DRAGON: 33,  DARK: 34,  FAIRY: 35
 };
-
-const formRegionOverrides = {
-    "ALOLA": ["RATTATA_ALOLA","RATICATE_ALOLA","RAICHU_ALOLA","SANDSHREW_ALOLA","SANDSLASH_ALOLA","VULPIX_ALOLA","NINETALES_ALOLA","DIGLETT_ALOLA","DUGTRIO_ALOLA","MEOWTH_ALOLA","PERSIAN_ALOLA","GEODUDE_ALOLA","GRAVELER_ALOLA","GOLEM_ALOLA","GRIMER_ALOLA","MUK_ALOLA","MAROWAK_ALOLA"],
-    "GALARIAN": ["MEOWTH_GALARIAN","PONYTA_GALARIAN","RAPIDASH_GALARIAN","SLOWPOKE_GALARIAN","SLOWBRO_GALARIAN","FARFETCHD_GALARIAN","WEEZING_GALARIAN","MR_MIME_GALARIAN","ARTICUNO_GALARIAN","ZAPDOS_GALARIAN","MOLTRES_GALARIAN","SLOWKING_GALARIAN","CORSOLA_GALARIAN","ZIGZAGOON_GALARIAN","LINOONE_GALARIAN","DARUMAKA_GALARIAN","DARMANITAN_GALARIAN","YAMASK_GALARIAN","STUNFISK_GALARIAN"],
-    "HISUI": ["GROWLITHE_HISUIAN","ARCANINE_HISUIAN","VOLTORB_HISUIAN","ELECTRODE_HISUIAN","TYPHLOSION_HISUIAN","QWILFISH_HISUIAN","SNEASEL_HISUIAN","SAMUROTT_HISUIAN","LILLIGANT_HISUIAN","ZORUA_HISUIAN","ZOROARK_HISUIAN","BRAVIARY_HISUIAN","SLIGGOO_HISUIAN","GOODRA_HISUIAN","AVALUGG_HISUIAN","DECIDUEYE_HISUIAN"],
-    "PALDEA": ["TAUROS_PALDEA_AQUA", "TAUROS_PALDEA_BLAZE", "TAUROS_PALDEA_COMBAT", "WOOPER_PALDEA"]
-}
-
 
 
 function getPokemonTypes(monNumber, monForm = null, monName = null) {
     if (monForm) {
         const cleanForm = monForm.trim().toUpperCase();
         const key = `${monNumber}_${cleanForm}`;
-        console.log("getPokemonTypes() → checking key:", key, "→", formTypeOverrides[key]);
+        // console.log("getPokemonTypes() → checking key:", key, "→", formTypeOverrides[key]);
         if (formTypeOverrides[key]) {
             return formTypeOverrides[key];
         }
     } else if (monName) {
         const normalKey = `${monNumber}_${monName.trim().toUpperCase()}_NORMAL`;
-        console.log("getPokemonTypes() → checking fallback key:", normalKey, "→", formTypeOverrides[normalKey]);
+        // console.log("getPokemonTypes() → checking fallback key:", normalKey, "→", formTypeOverrides[normalKey]);
         if (formTypeOverrides[normalKey]) {
             return formTypeOverrides[normalKey];
         }
@@ -1955,30 +1941,8 @@ function getPokemonTypes(monNumber, monForm = null, monName = null) {
 }
 
 
-
-
-
-
-// function getPokemonTypes(monNumber, monForm = null) {
-//     if (monForm) {
-//         const key = `${monNumber}_${monForm.toUpperCase()}`;
-//         if (formTypeOverrides[key]) {
-//             return formTypeOverrides[key];
-//         }
-//     }
-
-//     const types = [];
-//     for (const [type, numbers] of Object.entries(pokeTypings)) {
-//         if (numbers.includes(monNumber)) {
-//             types.push(type);
-//         }
-//     }
-//     return types;
-// }
-
-
 // Function to build sprite url from pokemon.mon_details
-    function buildSpriteUrl(pokemon) {
+function buildSpriteUrl(pokemon) {
     const pokeNumber = pokemon.mon_number.toString();
     let spriteUrl = `https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}`;
 
@@ -1991,7 +1955,7 @@ function getPokemonTypes(monNumber, monForm = null, monName = null) {
         spriteUrl += `.f${pm_form}`;                                                                                // Unown, Burmy, Wormadam get full mon_form
         formSuffix = "";
     }
-    if(pokemon.mon_name === "KYUREM" || pokemon.mon_name === "GENESECT"){                                           // Genesect and Kyurem get NORMAL
+    if(pokemon.mon_form === "KYUREM_NORMAL" || pokemon.mon_form === "GENESECT_NORMAL"){                                           // Genesect and Kyurem get NORMAL
         spriteUrl += `.fNORMAL`;
         formSuffix = "";
     }
@@ -1999,7 +1963,7 @@ function getPokemonTypes(monNumber, monForm = null, monName = null) {
     if (formSuffix !== "") spriteUrl += `.f${formSuffix}`;
 
     let pm_costume = pokemon.mon_costume || "";
-    if (pm_costume !== "") spriteUrl += `.c${pm_costume}`;
+    if (pokemon.mon_costume !== "") spriteUrl += `.c${pokemon.mon_costume}`;
 
     if (pokemon.mon_isshiny === 'YES') {
         spriteUrl += `.s`;
@@ -2017,7 +1981,6 @@ function createPokemonCard(id, pokemon) {
 
     // Create Sprite URL 
     let spriteUrl = buildSpriteUrl(pokemon);
-    console.log(spriteUrl);
 
     // Calculate IV percentage
     const attackIV = Number(pokemon.mon_attack) || 0;
@@ -2039,6 +2002,12 @@ function createPokemonCard(id, pokemon) {
         tooltip = pokemon.mon_costume;
     } else if (pokemon.mon_form && !pokemon.mon_form.endsWith("_NORMAL")) {
         tooltip = pokemon.mon_form;
+    } else if (pokemon.mon_isshiny == true) {
+        tooltip = "✨✨✨";
+    } else if (pokemon.mon_islucky == true) {
+        tooltip = "🍀🍀🍀";
+    } else if (pokemon.mon_alignment === 'SHADOW'){
+        tooltip = "SHADOW";
     }
 
     if (tooltip) {
@@ -2058,64 +2027,113 @@ function createPokemonCard(id, pokemon) {
     const nicknameFilterSelected = document.getElementById("filterNickname").checked;
     const displayName = (nicknameFilterSelected && pokemon.mon_nickname) ? pokemon.mon_nickname : pokemon.mon_name;
 
-
-    card.innerHTML = `
-        <div class="sprite-container">
-            <img src="${spriteUrl}" alt="${displayName}" class="sprite" onerror="this.src='https://raw.githubusercontent.com/bluecereal127/BetterDex/master/pm${pokeNumber}.icon.png'">
-        </div>
-        
-        <div class="pokemon-name">
-            ${displayName} ${getGenderSymbol(pokemon.mon_gender)}
-        </div>
-    `;
-
-    //--typings go directly beneath 'mon name--//
+    // NEW LAYOUT START
     const types = getPokemonTypes(pokemon.mon_number, pokemon.mon_form, pokemon.mon_name);
-    const typeHtml = types.map(type => `<span class="type-badge type-${type.toLowerCase()}">${type}</span>`).join('');
-    const typeContainer = document.createElement('div');
-    typeContainer.classList.add('pokemon-types');
-    typeContainer.innerHTML = typeHtml;
-    card.appendChild(typeContainer);
+    const firstType = types[0];
+    const cardBackground = typingBackgrounds[firstType.toUpperCase()]?.[0] || "";
+    if (cardBackground) {
+        const topHalf = card.querySelector('.modern-card-top');
+            if (topHalf) {
+                topHalf.style.backgroundImage = `url('${cardBackground}')`;
+                topHalf.style.backgroundSize = "cover";
+                topHalf.style.backgroundPosition = "center";
+                
+            }
 
-        //--finish card html--//
-    card.innerHTML += `
-    <div class="pokemon-cp">CP ${pokemon.mon_cp}</div>
-        
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-value">${attackIV}</div>
-                <div class="stat-label">⚔️</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">${defenceIV}</div>
-                <div class="stat-label">🛡️</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">${staminaIV}</div>
-                <div class="stat-label">❤️</div>
-            </div>
-        </div>
-    `;
-    const moveBadgesContainer = document.createElement('div');
-    moveBadgesContainer.classList.add('move-badges');
-    moveBadgesContainer.innerHTML = `
-        ${createMoveBadge(pokemon.mon_move_1)}
-        ${createMoveBadge(pokemon.mon_move_2)}
-        ${pokemon.mon_move_3 ? createMoveBadge(pokemon.mon_move_3) : ""}
-    `;
-    card.appendChild(moveBadgesContainer);
+    }
 
-    const moveBadges = `
-    <div class="move-badges">
-        ${createMoveBadge(pokemon.mon_move_1)}
-        ${createMoveBadge(pokemon.mon_move_2)}
-        ${pokemon.mon_move_3 ? createMoveBadge(pokemon.mon_move_3) : ""}
+    const typeIconsHtml = types.map(type => {
+    const upperType = type.toUpperCase();
+    const iconUrl = typeIcons[upperType]?.[0] || "";
+    return iconUrl
+        ? `<img class="type-badge-icon" src="${iconUrl}" alt="${type}" title="${type}">`
+        : '';
+    }).join('');
+
+
+const gender = getGenderSymbol(pokemon.mon_gender);
+const iv1 = Number(pokemon.mon_attack) || 0;
+const iv2 = Number(pokemon.mon_defence) || 0;
+const iv3 = Number(pokemon.mon_stamina) || 0;
+const ivPercent = calculateIVPercentage(iv1, iv2, iv3);
+
+// Generate moveBadgeIds (type icons for moves)
+const move1Type = getMoveType(pokemon.mon_move_1);
+const move2Type = getMoveType(pokemon.mon_move_2);
+const move3Type = getMoveType(pokemon.mon_move_3);
+
+const moveBadgeId1 = typeBadgeNumbers[move1Type?.toUpperCase()] || "";
+const moveBadgeId2 = typeBadgeNumbers[move2Type?.toUpperCase()] || "";
+const moveBadgeId3 = typeBadgeNumbers[move3Type?.toUpperCase()] || "";
+
+const moveIcon1 = typeIcons[move1Type?.toUpperCase()]?.[0]
+  ? `<img class='type-badge-icon' src='${typeIcons[move1Type.toUpperCase()][0]}' alt='${move1Type}' title='${move1Type}'>`
+  : "";
+
+const moveIcon2 = typeIcons[move2Type?.toUpperCase()]?.[0]
+  ? `<img class='type-badge-icon' src='${typeIcons[move2Type.toUpperCase()][0]}' alt='${move2Type}' title='${move2Type}'>`
+  : "";
+
+const moveIcon3 = typeIcons[move3Type?.toUpperCase()]?.[0]
+  ? `<img class='type-badge-icon' src='${typeIcons[move3Type.toUpperCase()][0]}' alt='${move3Type}' title='${move3Type}'>`
+  : "";
+
+card.innerHTML = `
+<div class="modern-card">
+  <div class="modern-card-top">
+    
+    <!-- Everything in the top half -->
+    <div class="modern-header">
+      <div class="modern-cp">CP ${pokemon.mon_cp}</div>
     </div>
-    `;
+    <div class="modern-image">
+      <img src="${spriteUrl}" class="pokemon-img" alt="${displayName}">
+    </div>
+  </div>
+
+  <div class="modern-card-bottom">
+    <!-- Everything in the bottom half -->
+    <div class="modern-name" style="font-size:12px">${displayName} ${gender}</div>
+
+    <div class="modern-info-row">
+        <div class="modern-types type-icon-row">${typeIconsHtml}</div>
+    </div>
+
+    <div class="modern-moves">
+    <span class="move-icon-wrap">${moveIcon1}${createMoveBadge(pokemon.mon_move_1, types)}</span>
+    <span class="move-icon-wrap">${moveIcon2}${createMoveBadge(pokemon.mon_move_2, types)}</span>
+    ${pokemon.mon_move_3 ? `
+        <span class="move-icon-wrap">${moveIcon3}${createMoveBadge(pokemon.mon_move_3, types)}</span>
+    ` : `
+        <div style="height: 24px;"></div>
+    `}
+    </div>
+
+
+    <div class="modern-ivs">
+      <div class="iv-value">${iv1}</div>
+      <div class="iv-value">${iv2}</div>
+      <div class="iv-value">${iv3}</div>
+    </div>
+
+    <div class="iv-labels">
+      <div class="iv-label">⚔️</div>
+      <div class="iv-label">🛡️</div>
+      <div class="iv-label">❤️</div>
+    </div>
+  </div>
+</div>
+`;
+    const encasing= card.querySelector('.modern-card');
+    if (cardBackground && encasing) {
+    encasing.style.backgroundImage = `url('${cardBackground}')`;
+    encasing.style.backgroundSize = "cover";
+    encasing.style.backgroundPosition = "center";
+    }
+
+
     //console.log(`Moves for ${pokemon.mon_name}:`, moveBadges); // 👈 Add this
 
-          // <div class="move">${createMoveBadge(pokemon.mon_move_1)}</div>
-          // <div class="move">${createMoveBadge(pokemon.mon_move_2)}${" " + createMoveBadge(pokemon.mon_move_3)}</div>
 
     // Highlight selection
     if (selectedPokemonIds.has(id)) {
@@ -2161,14 +2179,14 @@ function buildSpriteUrl(pokemon) {
         spriteUrl += `.f${pm_form}`;                                                                                // Unown, Burmy, Wormadam get full mon_form
         formSuffix = "";
     }
-    if(pokemon.mon_name === "KYUREM" || pokemon.mon_name === "GENESECT"){                                           // Genesect and Kyurem get NORMAL
+    if(pokemon.mon_form === "KYUREM_NORMAL" || pokemon.mon_form === "GENESECT_NORMAL"){                             // Genesect and Kyurem get NORMAL
         spriteUrl += `.fNORMAL`;
         formSuffix = "";
     }
     if (formSuffix !== "") spriteUrl += `.f${formSuffix}`;
     
     let pm_costume = pokemon.mon_costume || "";
-    if (pm_costume !== "") spriteUrl += `.c${pm_costume}`;
+    if (pokemon.mon_costume && pokemon.mon_costume !== "") spriteUrl += `.c${pokemon.mon_costume}`;
 
     if (pokemon.mon_isshiny === 'YES') {
         spriteUrl += `.s`;
@@ -2185,6 +2203,8 @@ function showPokemonDetails(id, pokemon) {
     const isPurified = pokemon.mon_alignment === 'PURIFIED';
     const pokeNumber = pokemon.mon_number.toString();
     
+    const winRate = pokemon.mon_pvp_stats ? (pokemon.mon_pvp_stats.pvp_won/pokemon.mon_pvp_stats.pvp_total*100).toFixed(2):undefined;
+
     let spriteUrl = buildSpriteUrl(pokemon);
 
     // Calculate IV percentage
@@ -2299,6 +2319,24 @@ function showPokemonDetails(id, pokemon) {
             <div class="detail-section">
                 <h3>Additional Details</h3>
                 <table class="detail-table">
+                    
+                    ${pokemon.mon_pvp_stats ? `
+                    <tr>
+                        <th>PVP battles</th>
+                        <td>${pokemon.mon_pvp_stats.pvp_total}</td>
+                    </tr>
+                    <tr>
+                        <th>PVP wins</th>
+                        <td>${pokemon.mon_pvp_stats.pvp_won}</td>
+                    </tr>
+                        <tr>
+
+                    <tr>
+                        <th>Win Rate</th>
+                        <td>${winRate}%</td>
+                    </tr>
+                        <tr>
+                            ` : ''}
                     <tr>
                         <th>Height</th>
                         <td>${pokemon.mon_height} m</td>
@@ -2307,11 +2345,7 @@ function showPokemonDetails(id, pokemon) {
                         <th>Weight</th>
                         <td>${pokemon.mon_weight} kg</td>
                     </tr>
-                    <tr>
-                        <th>Level</th>
-                        <td>${pokemon.mon_level || 'Unknown'}</td>
-                    </tr>
-                    <tr>
+
                         <th>Form</th>
                         <td>${pokemon.mon_form ? pokemon.mon_form.replace('_', ' ') : 'Normal'}</td>
                     </tr>
@@ -2329,9 +2363,15 @@ function showPokemonDetails(id, pokemon) {
 }
 
 // Place here with other helper functions
-function getPokemonRegion(pokemon) {
-  const form = pokemon.mon_form;
 
+function isStabType(moveType, monTypes) {
+  return monTypes.includes(moveType);
+}
+
+function getPokemonRegion(pokemon) {
+  const form = pokemon.mon_form ? pokemon.mon_form.trim().toUpperCase() : "";
+
+  // Check form overrides
   for (const [region, forms] of Object.entries(formRegionOverrides)) {
     if (forms.includes(form)) return region;
   }
@@ -2353,6 +2393,7 @@ function getPokemonRegion(pokemon) {
   return "Unknown";
 }
 
+
 const GEN_TO_REGION = {
   "1": "Kanto",
   "2": "Johto",
@@ -2370,6 +2411,11 @@ function filterAndSortPokemon() {
     filteredPokemonIds = [];
 
     const searchText = elements.searchInput.value.toLowerCase();
+    let force3MoveFilter = false;
+
+    if (searchText.includes("3move") || searchText.includes("3moves")) {
+        force3MoveFilter = true;
+    }
     const sortBy = elements.sortBy.value;
     const filterStatus = elements.filterStatus.value;
     const filterFastMove = elements.filterFastMove.value;
@@ -2403,9 +2449,12 @@ function filterAndSortPokemon() {
     if (searchText) {
         const andGroups = searchText.split('&').map(group => group.trim());
         searchTerms = andGroups.map(group =>
-            group.split(/[,|]/).map(term => term.trim()).filter(term => term)
-        );
+            group.split(/[,|]/)
+                .map(term => term.trim())
+                .filter(term => term && term !== "3move" && term !== "3moves")
+        ).filter(group => group.length > 0);
     }
+
 
     for (const id in pokemonData) {
         const pokemon = pokemonData[id];
@@ -2421,13 +2470,29 @@ function filterAndSortPokemon() {
 
 
         // Type filter (union of selected types)
+
         if (selectedTypes.size > 0) {
             const types = getPokemonTypes(pokemon.mon_number, pokemon.mon_form).map(t => t.toLowerCase());
-            const matchesType = Array.from(selectedTypes).some(selected => types.includes(selected.toLowerCase()));
-            if (!matchesType) continue;
-        }
+            const selected = Array.from(selectedTypes).map(s => s.toLowerCase());
+            const matches = selected.filter(sel => types.includes(sel));
+            const pass = useAndLogic ? matches.length === selected.length : matches.length > 0;
+            if (!pass) continue;
+            }
 
-        // Search term filtering
+
+            
+            // // Custom filter: "3move" or "3moves"
+            // if (searchText === "3move" || searchText === "3moves" || searchText === "@3") {
+            //     if (!pokemon.mon_move_3 || pokemon.mon_move_3 === "") continue;
+            // }
+
+            if (force3MoveFilter && (!pokemon.mon_move_3 || pokemon.mon_move_3 === "")) {
+                continue;
+            }
+
+            
+            // Search term filtering
+            
         let matchesSearch = true;
         if (searchTerms.length > 0) {
             matchesSearch = searchTerms.every(orGroup => {
@@ -2441,25 +2506,44 @@ function filterAndSortPokemon() {
                     if (genMatch) {
                         const targetRegion = GEN_TO_REGION[genMatch[1]];
                         matched = getPokemonRegion(pokemon).toLowerCase() === targetRegion.toLowerCase();
-                    } else if (/^\d+(-\d+)?$/.test(term)) {
+                    } 
+                    else if (Object.values(GEN_TO_REGION).map(r => r.toLowerCase()).includes(term.toLowerCase())) {
+                        matched = getPokemonRegion(pokemon).toLowerCase() === term.toLowerCase();
+                    }
+
+                    else if (/^\d+(-\d+)?$/.test(term)) {
                         if (term.includes('-')) {
                             const [min, max] = term.split('-').map(Number);
                             matched = pokemon.mon_number >= min && pokemon.mon_number <= max;
                         } else {
                             matched = pokemon.mon_number === parseInt(term);
                         }
-                    } else {
-                        const termLower = term.toLowerCase();
-                        const monName = pokemon.mon_name.toLowerCase();
-                        const monNickname = (pokemon.mon_nickname || "").toLowerCase();
-
-                        if (term.startsWith('"') && term.endsWith('"')) {
-                            const exact = termLower.slice(1, -1);
-                            matched = monName === exact || monNickname === exact;
-                        } else {
-                            matched = monName.includes(termLower) || monNickname.includes(termLower);
+                    } 
+                        else if (specialSearchOptions[term.toUpperCase()]) {
+                            matched = specialSearchOptions[term.toUpperCase()].includes(pokemon.mon_number);
+                        }else if (term === "3move" || term === "3moves" || term === "@3") {
+                        matched = Boolean(pokemon.mon_move_3 && pokemon.mon_move_3 !== "");
                         }
-                    }
+                        else {
+                            const monName = pokemon.mon_name || "";
+                            const monNickname = pokemon.mon_nickname || "";
+
+                            const termLower = term.toLowerCase();
+                            const monNameLower = monName.toLowerCase();
+                            const monNicknameLower = monNickname.toLowerCase();
+
+                            const isQuoted = term.startsWith('"') && term.endsWith('"');
+                            const exactMatch = termLower.replace(/^"|"$/g, ""); // remove quotes if present
+
+                            // If quoted OR comma-separated (more than 1 item in orGroup), do exact match
+                            if (isQuoted || orGroup.length > 1) {
+                                matched = monNameLower === exactMatch || monNicknameLower === exactMatch;
+                            } else {
+                                // Default substring match
+                                matched = monNameLower.includes(termLower) || monNicknameLower.includes(termLower);
+                            }
+                        }
+
 
                     if (isNegated && matched) return false;
                     if (!isNegated && matched) hasPositiveMatch = true;
@@ -2476,19 +2560,40 @@ function filterAndSortPokemon() {
         if (filterStatus === 'lucky' && pokemon.mon_islucky !== 'YES') continue;
 
         // Special checkboxes
+
         if (activeSpecialFilters.length > 0) {
             const totalIV = (parseInt(pokemon.mon_attack) || 0) + (parseInt(pokemon.mon_defence) || 0) + (parseInt(pokemon.mon_stamina) || 0);
-            const matchesAny =
-                (activeSpecialFilters.includes('shiny') && pokemon.mon_isshiny === 'YES') ||
-                (activeSpecialFilters.includes('lucky') && pokemon.mon_islucky === 'YES') ||
-                (activeSpecialFilters.includes('shadow') && pokemon.mon_alignment === 'SHADOW') ||
-                (activeSpecialFilters.includes('purified') && pokemon.mon_alignment === 'PURIFIED') ||
-                (activeSpecialFilters.includes('hundo') && totalIV === 45) ||
-                (activeSpecialFilters.includes('nundo') && totalIV === 0) ||
-                (activeSpecialFilters.includes('nickname') && pokemon.mon_nickname);
 
-            if (!matchesAny) continue;
-        }
+            const matches = {
+                shiny: pokemon.mon_isshiny === 'YES',
+                lucky: pokemon.mon_islucky === 'YES',
+                shadow: pokemon.mon_alignment === 'SHADOW',
+                purified: pokemon.mon_alignment === 'PURIFIED',
+                hundo: totalIV === 45,
+                nundo: totalIV === 0,
+                nickname: Boolean(pokemon.mon_nickname),
+            };
+
+            const matchedKeys = activeSpecialFilters.filter(f => matches[f]);
+            const pass = useAndLogic ? matchedKeys.length === activeSpecialFilters.length : matchedKeys.length > 0;
+
+            if (!pass) continue;
+            }
+
+
+        // if (activeSpecialFilters.length > 0) {
+        //     const totalIV = (parseInt(pokemon.mon_attack) || 0) + (parseInt(pokemon.mon_defence) || 0) + (parseInt(pokemon.mon_stamina) || 0);
+        //     const matchesAny =
+        //         (activeSpecialFilters.includes('shiny') && pokemon.mon_isshiny === 'YES') ||
+        //         (activeSpecialFilters.includes('lucky') && pokemon.mon_islucky === 'YES') ||
+        //         (activeSpecialFilters.includes('shadow') && pokemon.mon_alignment === 'SHADOW') ||
+        //         (activeSpecialFilters.includes('purified') && pokemon.mon_alignment === 'PURIFIED') ||
+        //         (activeSpecialFilters.includes('hundo') && totalIV === 45) ||
+        //         (activeSpecialFilters.includes('nundo') && totalIV === 0) ||
+        //         (activeSpecialFilters.includes('nickname') && pokemon.mon_nickname);
+
+        //     if (!matchesAny) continue;
+        // }
 
         // Move filter
         // Move filters (Fast and Charged)
@@ -2505,11 +2610,12 @@ function filterAndSortPokemon() {
 
         // Gender, Form, Costume
         if (filterGender && pokemon.mon_gender !== filterGender) continue;
-        if (filterForm && pokemon.mon_form !== filterForm) continue;
+        if (filterForm && filterForm !== "" && filterForm !== "ALL" && pokemon.mon_form !== filterForm) continue;
+        // console.log(`${pokemon.mon_name}_${pokemon.mon_form} → Region: ${getPokemonRegion(pokemon)}`);
         if (filterCostume && pokemon.mon_costume !== filterCostume) continue;
 
         // Region
-        if (regionFilter && getPokemonRegion(pokemon) !== regionFilter) continue;
+        if (regionFilter && getPokemonRegion(pokemon).toLowerCase() !== regionFilter.toLowerCase()) continue;
 
         // CP range
         const cp = parseInt(pokemon.mon_cp);
@@ -2619,9 +2725,6 @@ function populateDropdowns() {
         elements.filterCostume.remove(1);
     }
     
-    // Add move options
-
-    
     // Add form options
     for (const form of Array.from(allForms).sort()) {
         if (form.endsWith('_NORMAL') || form.endsWith('_STANDARD')) continue;
@@ -2640,7 +2743,6 @@ function populateDropdowns() {
         elements.filterCostume.appendChild(option);
     }
     updateDependentMoveOptions();
-
 }
 
 // Function to update stats
@@ -2660,7 +2762,6 @@ function updateStats() {
     const labelText = useSelected ? ' (Selected)' : '';
 
 
-
     const suffixIds = [
       "totalStatLabelSuffix",
       "uniqueStatLabelSuffix",
@@ -2675,9 +2776,6 @@ function updateStats() {
       const el = document.getElementById(id);
       if (el) el.textContent = labelText;
     });
-
-
-
 
     if (!targetIds || targetIds.length === 0) {
         elements.totalPokemon.textContent = 0;
@@ -2724,9 +2822,6 @@ function updateStats() {
 }
 
 
-
-
-
 // Function to export selected pokemon to JSON
 function exportSelectedPokemon() {
     if (selectedPokemonIds.size === 0) {
@@ -2758,205 +2853,70 @@ function exportSelectedPokemon() {
 // Function to load sample data
 function loadSampleData() {
     const sampleData = {
-  "17673140651742863373": {
-    "mon_isshiny": "NO",
+  "17268916142959989174": {
+    "mon_isshiny": "YES",
     "mon_islucky": "NO",
-    "mon_weight": 55.13714599609375,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.4637632369995117,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_stamina": 14,
-    "mon_attack": 10,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "DRILL_PECK",
-    "mon_cp": 2448,
-    "mon_number": 145,
-    "mon_defence": 12,
-    "mon_weather_boost": "WINDY"
-  },
-  "7363298117727603579": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 42.5558967590332,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.391097903251648,
-    "mon_gender": "GENDERLESS",
-    "mon_alignment": "SHADOW",
-    "mon_stamina": 8,
-    "mon_attack": 15,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "ANCIENT_POWER",
-    "mon_cp": 776,
-    "mon_number": 145,
-    "mon_defence": 12
-  },
-  "15465708952440652589": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 63.76577377319336,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.8745477199554443,
-    "mon_gender": "GENDERLESS",
-    "mon_alignment": "SHADOW",
-    "mon_stamina": 14,
-    "mon_attack": 6,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "THUNDERBOLT",
-    "mon_cp": 757,
-    "mon_number": 145,
-    "mon_defence": 10
-  },
-  "10750833196742291976": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 56.9967155456543,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.6501779556274414,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_alignment": "SHADOW",
+    "mon_weight": 4.419086933135986,
+    "mon_move_1": "TACKLE_FAST",
+    "mon_height": 0.5545542240142822,
+    "mon_gender": "MALE",
+    "mon_form": "BULBASAUR_NORMAL",
     "mon_stamina": 11,
-    "mon_attack": 15,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "FRUSTRATION",
-    "mon_cp": 1982,
-    "mon_number": 145,
-    "mon_defence": 12
-  },
-    "8159554756498074688" : {
-    "mon_isshiny" : "NO",
-    "mon_islucky" : "NO",
-    "mon_weight" : 35.862403869628906,
-    "mon_move_1" : "SPARK_FAST",
-    "mon_height" : 0.86764609813690186,
-    "mon_gender" : "MALE",
-    "mon_form" : "RAICHU_ALOLA",
-    "mon_stamina" : 15,
-    "mon_attack" : 11,
-    "mon_name" : "RAICHU",
-    "mon_move_2" : "WILD_CHARGE",
-    "mon_cp" : 947,
-    "mon_number" : 26,
-    "mon_defence" : 10,
-    },
-    "14551503511936860197": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 30.857364654541016,
-    "mon_move_1": "COUNTER_FAST",
-    "mon_height": 1.2964884042739868,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_GALARIAN",
-    "mon_stamina": 13,
     "mon_attack": 8,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "BRAVE_BIRD",
-    "mon_cp": 355,
-    "mon_number": 145,
-    "mon_defence": 10
+    "mon_name": "BULBASAUR",
+    "mon_move_2": "SEED_BOMB",
+    "mon_cp": 951,
+    "mon_number": 1,
+    "mon_defence": 11,
+    "mon_weather_boost": "CLEAR"
   },
-  "717968478338063915": {
+  "3103562894972813118": {
     "mon_isshiny": "NO",
     "mon_islucky": "NO",
-    "mon_weight": 72.58869934082031,
-    "mon_move_1": "COUNTER_FAST",
-    "mon_height": 1.7578277587890625,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_GALARIAN",
-    "mon_stamina": 6,
-    "mon_attack": 7,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "ANCIENT_POWER",
-    "mon_cp": 743,
-    "mon_number": 145,
-    "mon_defence": 6,
-    "mon_weather_boost": "WINDY"
-  },
-  "6452236330306084149": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 63.82428741455078,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.7502485513687134,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_alignment": "SHADOW",
+    "mon_weight": 10.266105651855469,
+    "mon_move_1": "EMBER_FAST",
+    "mon_height": 0.6489905118942261,
+    "mon_gender": "MALE",
+    "mon_form": "CHARMANDER_NORMAL",
     "mon_stamina": 15,
-    "mon_attack": 7,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "ZAP_CANNON",
-    "mon_cp": 2431,
-    "mon_number": 145,
-    "mon_defence": 13,
-    "mon_weather_boost": "WINDY"
-  },
-  "11712407021149250652": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 50.71421813964844,
-    "mon_move_1": "THUNDER_SHOCK_FAST",
-    "mon_height": 1.4158815145492554,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_stamina": 11,
-    "mon_attack": 13,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "THUNDERBOLT",
-    "mon_cp": 2446,
-    "mon_number": 145,
-    "mon_defence": 10,
-    "mon_weather_boost": "WINDY"
-  },
-  "1248576179712333980": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 25.040462493896484,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.2822333574295044,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_stamina": 11,
-    "mon_attack": 13,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "THUNDER",
-    "mon_cp": 2471,
-    "mon_number": 145,
-    "mon_defence": 14
-  },
-  "4387782779858585036": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 30.830202102661133,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.3531192541122437,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_stamina": 10,
     "mon_attack": 15,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "ZAP_CANNON",
-    "mon_cp": 1967,
-    "mon_number": 145,
-    "mon_defence": 10
+    "mon_name": "CHARMANDER",
+    "mon_move_2": "FLAMETHROWER",
+    "mon_cp": 555,
+    "mon_number": 4,
+    "mon_defence": 13
   },
-  "2640376050793073366": {
+  "3212683519870653695": {
     "mon_isshiny": "NO",
     "mon_islucky": "NO",
-    "mon_weight": 34.159698486328125,
-    "mon_move_1": "CHARGE_BEAM_FAST",
-    "mon_height": 1.3401193618774414,
-    "mon_gender": "GENDERLESS",
-    "mon_form": "ZAPDOS_NORMAL",
-    "mon_alignment": "SHADOW",
-    "mon_stamina": 6,
-    "mon_attack": 8,
-    "mon_name": "ZAPDOS",
-    "mon_move_2": "FRUSTRATION",
-    "mon_cp": 2367,
-    "mon_number": 145,
-    "mon_defence": 9,
-    "mon_weather_boost": "WINDY"
+    "mon_weight": 6.42330265045166,
+    "mon_move_1": "SCRATCH_FAST",
+    "mon_height": 0.505854070186615,
+    "mon_gender": "FEMALE",
+    "mon_form": "CHARMANDER_NORMAL",
+    "mon_stamina": 11,
+    "mon_attack": 13,
+    "mon_name": "CHARMANDER",
+    "mon_move_2": "FLAME_CHARGE",
+    "mon_cp": 399,
+    "mon_number": 4,
+    "mon_defence": 11
+  },
+  "15681485098685622871": {
+    "mon_isshiny": "NO",
+    "mon_islucky": "NO",
+    "mon_weight": 10.276851654052734,
+    "mon_move_1": "VINE_WHIP_FAST",
+    "mon_height": 0.8204759359359741,
+    "mon_gender": "MALE",
+    "mon_form": "BULBASAUR_NORMAL",
+    "mon_stamina": 14,
+    "mon_attack": 14,
+    "mon_name": "BULBASAUR",
+    "mon_move_2": "POWER_WHIP",
+    "mon_cp": 468,
+    "mon_number": 1,
+    "mon_defence": 13
   }
 };
     
