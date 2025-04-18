@@ -1,0 +1,20 @@
+let typingBackgrounds = {
+    "BUG": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_bug.png"],
+    "DARK": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dark.png"],
+    "DRAGON": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dragon.png"],
+    "ELECTRIC": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_electric.png"],
+    "FAIRY": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fairy.png"],
+    "FIGHTING": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fighting.png"],
+    "FIRE": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_fire.png"],
+    "FLYING": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_flying.png"],
+    "GHOST": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ghost.png"],
+    "GRASS": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_grass.png"],
+    "GROUND": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ground.png"],
+    "ICE": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_ice.png"],
+    "NORMAL": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_normal.png"],
+    "POISON": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_poison.png"],
+    "PSYCHIC": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_psychic.png"],
+    "ROCK": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_rock.png"],
+    "STEEL": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_steel.png"],
+    "WATER": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"]
+    };

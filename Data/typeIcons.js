@@ -1,0 +1,20 @@
+const typeIcons = {
+    BUG: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_BUG_BORDERED.png"],
+    DARK: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_DARK_BORDERED.png"],
+    DRAGON: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_DRAGON_BORDERED.png"],
+    ELECTRIC: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_ELECTRIC_BORDERED.png"],
+    FAIRY: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_FAIRY_BORDERED.png"],
+    FIGHTING: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_FIGHTING_BORDERED.png"],
+    FIRE: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_FIRE_BORDERED.png"],
+    FLYING: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_FLYING_BORDERED.png"],
+    GHOST: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_GHOST_BORDERED.png"],
+    GRASS: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_GRASS_BORDERED.png"],
+    GROUND: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_GROUND_BORDERED.png"],
+    ICE: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_ICE_BORDERED.png"],
+    NORMAL: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_NORMAL_BORDERED.png"],
+    POISON: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_POISON_BORDERED.png"],
+    PSYCHIC: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_PSYCHIC_BORDERED.png"],
+    ROCK: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_ROCK_BORDERED.png"],
+    STEEL: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_STEEL_BORDERED.png"],
+    WATER: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_WATER_BORDERED.png"]
+    };
