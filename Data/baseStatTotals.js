@@ -1,4 +1,4 @@
-const baseStats = {
+window.baseStats = {
   "ABOMASNOW": [178,158,207],
   "ABRA": [195,82,93],
   "ABSOL": [246,120,163],
