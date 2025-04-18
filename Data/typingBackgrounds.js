@@ -1,4 +1,4 @@
-let typingBackgrounds = {
+window.typingBackgrounds = {
     "BUG": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_bug.png"],
     "DARK": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dark.png"],
     "DRAGON": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_dragon.png"],
