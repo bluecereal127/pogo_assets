@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
 }
 .modern-card-top {
   padding: 8px;
@@ -27,7 +28,8 @@
   background-color: whitesmoke;
   padding: 8px;
   opacity: 0.8375;
-  border-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .modern-header {
@@ -68,8 +70,10 @@
 }
 
 .pokemon-img {
-  width: 96px;
-  height: 96px;
+    min-width: 192px;
+    min-height: 192px;
+  max-width: 256px;
+  max-height: 256px;
 }
 
 .modern-cp {
@@ -140,14 +144,6 @@
             color: var(--text-color);
             line-height: 1.6;
         } 
-        /* body {
-        background-image: url('https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Backgrounds/Sky_Stars.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-attachment: fixed;
-        } */
-
         
         h1, h2, h3 {
             color: var(--primary-color);
@@ -322,8 +318,8 @@
         
         .pokemon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
         }
         
         /*---Pokemon Card styles---*/
@@ -348,6 +344,48 @@
   font-size: 1.5em;
   margin-top: 4px;
 }
+
+/* Shared styles */
+.pvp-rank-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 20px;
+  z-index: 10;
+  padding: 2px;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  pointer-events: auto;
+}
+
+/* Rank-specific borders */
+.rank-1 {
+  border-color: gold;
+}
+
+.rank-2 {
+  border-color: silver;
+}
+
+.rank-3 {
+  border-color: #cd7f32; /* bronze */
+}
+
+.shiny-icon {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid #ffd700; /* gold border */
+  padding: 1px;
+  pointer-events: auto;
+}
+
 
 .type-icons {
   margin-top: 4px;
@@ -604,20 +642,6 @@
             color: white;
         }
         
-        
-        .sprite-container {
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        
-        .sprite {
-            max-height: 140px;
-            max-width: 140px;
-        }
-        
         .pokemon-name {
             font-weight: bold;
             font-size: 16px;
@@ -789,8 +813,8 @@
         }
         
         .detail-pokemon-sprite img {
-            max-width: 200px;
-            max-height: 200px;
+            max-width: 300px;
+            max-height: 300px;
         }
         
         .detail-pokemon-info {
@@ -1298,6 +1322,10 @@
                 <button id="loadSampleData">Load Sample Data</button>
                 <button id="uploadJsonBtn">Upload JSON File</button>
                 <button id="exportSelectedBtn" class="secondary">Export Selected</button>
+                <select id="accountSelector">
+                    <option value="">Select Account</option>
+                </select>
+                
             </div>
         </div>
         
@@ -1554,17 +1582,23 @@
     </div>
 
 <!-- Include static data scripts -->
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/typeIcons.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/formTypeOverrides.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/pokeTypings.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/moveTypings.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/formRegionOverrides.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/specialSearchOptions.js"></script>
-<script src="C:/Users/Stephen/Desktop/PoGo/pogo_assets/Data/typingBackgrounds.js"></script>
+<!-- <script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/typeIcons.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.pokeFormTypings.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.pokeFormTypings.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.moveTypings.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.formRegionOverrides.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.specialSearchOptions.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.typingBackgrounds.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/greatLeagueRankings.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/ultraLeagueRankings.js"></script>
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/window.baseStatTotals.js"></script> -->
+<script src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/main/Data/pogoData.js"></script>
 
 
 
-    <script>
+
+
+<script>
         console.log("Script loaded");
 
 document.getElementById('searchHelpBtn').addEventListener('click', () => {
@@ -1596,6 +1630,8 @@ let displayLimit = 50;
 let currentlyDisplayed = 0;
 let masterUrl = "";
 let moveDropdownsLinked = true;
+let uploadedFiles = {};  // { accountName: [ { date: ..., data: ... } ] }
+
 
 
 
@@ -1673,10 +1709,6 @@ const elements = {
 
 };
 
-const TYPE_LIST = [
-  "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
-];
-
 const selectedTypes = new Set();
 function renderTypeFilters() {
     const container = document.getElementById('type-filter');
@@ -1709,10 +1741,18 @@ function renderTypeFilters() {
     });
 }
 
-
 renderTypeFilters();
 
 // Utility functions
+
+function getPvpRankBadge(rankIndex) {
+  if (rankIndex === 0) return "🥇";
+  if (rankIndex === 1) return "🥈";
+  if (rankIndex === 2) return "🥉";
+  if (rankIndex >= 3 && rankIndex <= 250) return rankIndex;
+  return null;
+}
+
 function toggleFilterLogic() {
   useAndLogic = !useAndLogic;
 
@@ -1725,8 +1765,6 @@ function toggleFilterLogic() {
 
   filterAndSortPokemon();
 }
-
-
 
 function updateDependentMoveOptions() {
     if (!moveDropdownsLinked) return; // Do nothing if not linked
@@ -1820,7 +1858,6 @@ function updateChargedMoveDropdown() {
     if (chargedMoves.has(prevCharged)) elements.filterChargedMove.value = prevCharged;
 }
 
-
 function repopulateUnlinkedMoveDropdowns() {
     const fastMoveSet = new Set();
     const chargedMoveSet = new Set();
@@ -1856,8 +1893,6 @@ function repopulateUnlinkedMoveDropdowns() {
     if (chargedMoveSet.has(prevCharged)) elements.filterChargedMove.value = prevCharged;
 }
 
-
-
 function getIVColor(percent) {
     const red = [255, 0, 0];
     const green = [0, 255, 0];
@@ -1872,9 +1907,8 @@ function getIVColor(percent) {
     };
 }
 
-
 function getMoveType(moveName) {
-  for (const [type, moves] of Object.entries(moveTypings)) {
+  for (const [type, moves] of Object.entries(window.moveTypings)) {
     if (moves.includes(moveName)) return type.toLowerCase();
   }
   return "unknown";
@@ -1892,9 +1926,10 @@ function createMoveBadge(moveName, monTypes = []) {
   const type = getMoveType(moveName);
   const formatted = formatMoveName(moveName);
   const stabMatch = monTypes.includes(type.toUpperCase());
-return `<span class="type-badge type-${type}${stabMatch ? " stab" : " faded"}">${formatted}</span>`;
-}
+  const tooltip = stabMatch ? ' title="STAB"' : "";
 
+return `<span class="type-badge type-${type}${stabMatch ? " stab" : " faded"}"${tooltip}>${formatted}</span>`;
+}
 
 function getGenderSymbol(gender) {
     if (gender === 'MALE') return '<span class="gender-male">♂</span>';
@@ -1907,39 +1942,33 @@ function calculateIVPercentage(attack, defence, stamina) {
     return ((attack + defence + stamina) / 45 * 100).toFixed(2);
 }
 
-
-const typeBadgeNumbers = {
-  NORMAL: 18,  FIGHTING: 19,  FLYING: 20,  POISON: 21,  GROUND: 22,  ROCK: 23,
-  BUG: 24,  GHOST: 25,  STEEL: 26,  FIRE: 27,  WATER: 28,  GRASS: 29,
-  ELECTRIC: 30,  PSYCHIC: 31,  ICE: 32,  DRAGON: 33,  DARK: 34,  FAIRY: 35
-};
-
-
 function getPokemonTypes(monNumber, monForm = null, monName = null) {
+    console.log("pokeFormTypings:", window.pokeFormTypings);
+console.log("1_BULBASAUR_NORMAL:", window.pokeFormTypings?.["1_BULBASAUR_NORMAL"]);
+
     if (monForm) {
         const cleanForm = monForm.trim().toUpperCase();
         const key = `${monNumber}_${cleanForm}`;
-        // console.log("getPokemonTypes() → checking key:", key, "→", formTypeOverrides[key]);
-        if (formTypeOverrides[key]) {
-            return formTypeOverrides[key];
+        // console.log("getPokemonTypes() → checking key:", key, "→", window.pokeFormTypings[key]);
+        if (window.pokeFormTypings[key]) {
+            return window.pokeFormTypings[key];
         }
     } else if (monName) {
         const normalKey = `${monNumber}_${monName.trim().toUpperCase()}_NORMAL`;
-        // console.log("getPokemonTypes() → checking fallback key:", normalKey, "→", formTypeOverrides[normalKey]);
-        if (formTypeOverrides[normalKey]) {
-            return formTypeOverrides[normalKey];
+        // console.log("getPokemonTypes() → checking fallback key:", normalKey, "→", window.pokeFormTypings[normalKey]);
+        if (window.pokeFormTypings[normalKey]) {
+            return window.pokeFormTypings[normalKey];
         }
     }
 
     const types = [];
-    for (const [type, numbers] of Object.entries(pokeTypings)) {
+    for (const [type, numbers] of Object.entries(window.pokeFormTypings)) {
         if (numbers.includes(monNumber)) {
             types.push(type);
         }
     }
     return types;
 }
-
 
 // Function to build sprite url from pokemon.mon_details
 function buildSpriteUrl(pokemon) {
@@ -1972,6 +2001,7 @@ function buildSpriteUrl(pokemon) {
     spriteUrl += `.icon.png`;
     return spriteUrl;
 }
+
 // Function to create a Pokémon card
 function createPokemonCard(id, pokemon) {
     const isShiny = pokemon.mon_isshiny === 'YES';
@@ -1993,27 +2023,8 @@ function createPokemonCard(id, pokemon) {
     card.className = `pokemon-card ${isShiny ? 'shiny' : ''} ${isLucky ? 'lucky' : ''} ${isShadow ? 'shadow' : ''}`;
     card.dataset.id = id;
 
-    // Tooltip: show nickname if it exists
-
-    let tooltip = "";
-    if (pokemon.mon_nickname) {
-        tooltip = pokemon.mon_nickname;
-    } else if (pokemon.mon_costume) {
-        tooltip = pokemon.mon_costume;
-    } else if (pokemon.mon_form && !pokemon.mon_form.endsWith("_NORMAL")) {
-        tooltip = pokemon.mon_form;
-    } else if (pokemon.mon_isshiny == true) {
-        tooltip = "✨✨✨";
-    } else if (pokemon.mon_islucky == true) {
-        tooltip = "🍀🍀🍀";
-    } else if (pokemon.mon_alignment === 'SHADOW'){
-        tooltip = "SHADOW";
-    }
-
-    if (tooltip) {
-        card.title = tooltip;
-    }
-
+    
+    
     card.dataset.id = id;
     card.onclick = () => togglePokemonSelection(id, pokemon);
     card.ondblclick = (event) => {
@@ -2030,7 +2041,7 @@ function createPokemonCard(id, pokemon) {
     // NEW LAYOUT START
     const types = getPokemonTypes(pokemon.mon_number, pokemon.mon_form, pokemon.mon_name);
     const firstType = types[0];
-    const cardBackground = typingBackgrounds[firstType.toUpperCase()]?.[0] || "";
+    const cardBackground = window.typingBackgrounds[firstType.toUpperCase()]?.[0] || "";
     if (cardBackground) {
         const topHalf = card.querySelector('.modern-card-top');
             if (topHalf) {
@@ -2039,16 +2050,16 @@ function createPokemonCard(id, pokemon) {
                 topHalf.style.backgroundPosition = "center";
                 
             }
-
+            
     }
 
     const typeIconsHtml = types.map(type => {
     const upperType = type.toUpperCase();
     const iconUrl = typeIcons[upperType]?.[0] || "";
     return iconUrl
-        ? `<img class="type-badge-icon" src="${iconUrl}" alt="${type}" title="${type}">`
-        : '';
-    }).join('');
+    ? `<img class="type-badge-icon" src="${iconUrl}" alt="${type}" title="${type}">`
+    : '';
+}).join('');
 
 
 const gender = getGenderSymbol(pokemon.mon_gender);
@@ -2056,6 +2067,92 @@ const iv1 = Number(pokemon.mon_attack) || 0;
 const iv2 = Number(pokemon.mon_defence) || 0;
 const iv3 = Number(pokemon.mon_stamina) || 0;
 const ivPercent = calculateIVPercentage(iv1, iv2, iv3);
+const ivHash = hashIVs(iv1, iv2, iv3);
+const pvpKey = (pokemon.mon_form && !pokemon.mon_form.endsWith('_NORMAL')) 
+? pokemon.mon_form 
+: pokemon.mon_name;
+
+const greatList = greatLeagueRankings[pvpKey] || [];
+const ultraList = ultraLeagueRankings[pvpKey] || [];
+
+const greatRank = greatList.indexOf(ivHash);
+const ultraRank = ultraList.indexOf(ivHash);
+
+const cp = Number(pokemon.mon_cp);
+let rankBadgeHtml = '';
+let bestRankNum = '';
+let bestRankLeague = "";
+if (cp <= 1500 && (greatRank !== -1 || ultraRank !== -1)) {
+    if (greatRank !== -1 && (ultraRank === -1 || greatRank < ultraRank)) {
+        bestRankNum = greatRank;
+        bestRankLeague = "Great League - Rank " + (greatRank+1).toString();
+        const emoji = getPvpRankBadge(greatRank);
+        console.log(emoji)
+    if (emoji) rankBadgeHtml = `<div class="pvp-rank-badge rank-${greatRank + 1}">${emoji}</div>`;
+    console.log(emoji + "pvp-rank-badge rank-${greatRank + 1}")
+  } else if (ultraRank !== -1 && (greatRank === -1 || ultraRank < greatRank)) {
+    bestRankNum = ultraRank;
+    bestRankLeague = "Ultra League - Rank " + (ultraRank+1).toString();
+    const emoji = getPvpRankBadge(ultraRank);
+    console.log(emoji)
+      if (emoji) rankBadgeHtml = `<div class="pvp-rank-badge rank-${ultraRank + 1}">${emoji}</div>`;
+      console.log(emoji + "pvp-rank-badge rank-${ultraRank + 1}")
+    } else if (greatRank === ultraRank && greatRank !== -1) {
+        bestRankNum = greatRank;
+        bestRankLeague = "Great League - Rank " + (greatRank+1).toString();
+        const emoji = getPvpRankBadge(greatRank);
+        console.log(emoji)
+        if (emoji) rankBadgeHtml = `<div class="pvp-rank-badge rank-${greatRank + 1}">${emoji}</div>`;
+        console.log(emoji+ "pvp-rank-badge rank-${greatRank + 1}")
+    }
+} else if (cp > 1500 && cp <= 2500 && ultraRank !== -1) {
+    bestRankNum = ultraRank;
+    bestRankLeague = "Ultra League - Rank " + (ultraRank+1).toString();
+
+  const emoji = getPvpRankBadge(ultraRank);
+  if (emoji) rankBadgeHtml = `<div class="pvp-rank-badge rank-${ultraRank + 1}">${emoji}</div>`;
+  console.log(emoji + "pvp-rank-badge rank-${ultraRank + 1}")
+}
+
+// Tooltip: show nickname if it exists
+
+let tooltip = "";
+if (pokemon.mon_isshiny === "YES") {
+    tooltip += "✨\n";
+}
+if (pokemon.mon_islucky === "YES") {
+    tooltip += "🍀\n";
+}
+if (pokemon.mon_name){
+    if(pokemon.mon_form && !pokemon.mon_form.endsWith("_NORMAL")) {
+        tooltip += "Species: " + pokemon.mon_form.toString();
+    } else{
+    tooltip += "Species: " + pokemon.mon_name.toString();
+    }
+}
+if (pokemon.mon_nickname) {
+    tooltip += "\n Nickname: " + pokemon.mon_nickname.toString();
+}
+if (pokemon.mon_costume) {
+    tooltip += "\n Costume: " +pokemon.mon_costume.toString();
+}
+if (pokemon.mon_alignment === 'SHADOW'){
+    tooltip += "\n Alignment: Shadow";
+} else if (pokemon.mon_alignment === 'PURIFIED'){
+    tooltip += "\n Alignment: Purified";
+}
+if (rankBadgeHtml){
+    tooltip += "\n---PVP---\n " + bestRankLeague;
+}
+
+if (tooltip) {
+    card.title = tooltip;
+}
+
+
+
+// const isRankedAtAll = pvpRankings[pvpKey]?.includes(ivHash);
+
 
 // Generate moveBadgeIds (type icons for moves)
 const move1Type = getMoveType(pokemon.mon_move_1);
@@ -2080,11 +2177,13 @@ const moveIcon3 = typeIcons[move3Type?.toUpperCase()]?.[0]
 
 card.innerHTML = `
 <div class="modern-card">
+    ${isShiny ? `<img class="shiny-icon" src="https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Pokedex/ic_shiny.png" alt="Shiny">` : ""}
+    ${rankBadgeHtml ? `<div class="pvp-rank-badge" title="Rank "${bestRankNum+1}"">${rankBadgeHtml}</div>` : ""}
   <div class="modern-card-top">
     
     <!-- Everything in the top half -->
     <div class="modern-header">
-      <div class="modern-cp">CP ${pokemon.mon_cp}</div>
+      <div class="modern-cp">cp ${pokemon.mon_cp}</div>
     </div>
     <div class="modern-image">
       <img src="${spriteUrl}" class="pokemon-img" alt="${displayName}">
@@ -2363,6 +2462,10 @@ function showPokemonDetails(id, pokemon) {
 }
 
 // Place here with other helper functions
+function hashIVs(attack, defense, stamina) {
+  return (attack << 8) | (defense << 4) | stamina;
+}
+
 
 function isStabType(moveType, monTypes) {
   return monTypes.includes(moveType);
@@ -2372,7 +2475,7 @@ function getPokemonRegion(pokemon) {
   const form = pokemon.mon_form ? pokemon.mon_form.trim().toUpperCase() : "";
 
   // Check form overrides
-  for (const [region, forms] of Object.entries(formRegionOverrides)) {
+  for (const [region, forms] of Object.entries(window.formRegionOverrides)) {
     if (forms.includes(form)) return region;
   }
 
@@ -2519,8 +2622,8 @@ function filterAndSortPokemon() {
                             matched = pokemon.mon_number === parseInt(term);
                         }
                     } 
-                        else if (specialSearchOptions[term.toUpperCase()]) {
-                            matched = specialSearchOptions[term.toUpperCase()].includes(pokemon.mon_number);
+                        else if (window.specialSearchOptions[term.toUpperCase()]) {
+                            matched = window.specialSearchOptions[term.toUpperCase()].includes(pokemon.mon_number);
                         }else if (term === "3move" || term === "3moves" || term === "@3") {
                         matched = Boolean(pokemon.mon_move_3 && pokemon.mon_move_3 !== "");
                         }
@@ -2853,70 +2956,86 @@ function exportSelectedPokemon() {
 // Function to load sample data
 function loadSampleData() {
     const sampleData = {
-  "17268916142959989174": {
+  "9632908670737782471": {
+    "mon_isshiny": "NO",
+    "mon_weight": 87.94282531738281,
+    "mon_islucky": "NO",
+    "mon_move_1": "ROLLOUT_FAST",
+    "mon_move_3": "HYDRO_CANNON",
+    "mon_height": 1.4901500940322876,
+    "mon_gender": "MALE",
+    "mon_form": "BLASTOISE_NORMAL",
+    "mon_nickname": "G1",
+    "mon_stamina": 15,
+    "mon_attack": 1,
+    "mon_name": "BLASTOISE",
+    "mon_move_2": "ICE_BEAM",
+    "mon_cp": 1498,
+    "mon_number": 9,
+    "mon_defence": 15
+  },
+  "12533949252660279085": {
+    "mon_isshiny": "NO",
+    "mon_weight": 82.90076446533203,
+    "mon_islucky": "NO",
+    "mon_move_1": "ROLLOUT_FAST",
+    "mon_move_3": "ICE_BEAM",
+    "mon_height": 1.5313935279846191,
+    "mon_gender": "MALE",
+    "mon_form": "BLASTOISE_NORMAL",
+    "mon_nickname": "G15/U22",
+    "mon_stamina": 15,
+    "mon_attack": 1,
+    "mon_name": "BLASTOISE",
+    "mon_alignment": "SHADOW",
+    "mon_move_2": "SKULL_BASH",
+    "mon_cp": 1491,
+    "mon_number": 9,
+    "mon_defence": 13
+  },
+  "4721233759286587858": {
     "mon_isshiny": "YES",
     "mon_islucky": "NO",
-    "mon_weight": 4.419086933135986,
-    "mon_move_1": "TACKLE_FAST",
-    "mon_height": 0.5545542240142822,
+    "mon_weight": 133.12974548339844,
+    "mon_move_1": "BITE_FAST",
+    "mon_costume": "SUMMER_2018",
+    "mon_height": 1.8652832508087158,
     "mon_gender": "MALE",
-    "mon_form": "BULBASAUR_NORMAL",
+    "mon_form": "BLASTOISE_NORMAL",
     "mon_stamina": 11,
-    "mon_attack": 8,
-    "mon_name": "BULBASAUR",
-    "mon_move_2": "SEED_BOMB",
-    "mon_cp": 951,
-    "mon_number": 1,
-    "mon_defence": 11,
-    "mon_weather_boost": "CLEAR"
-  },
-  "3103562894972813118": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 10.266105651855469,
-    "mon_move_1": "EMBER_FAST",
-    "mon_height": 0.6489905118942261,
-    "mon_gender": "MALE",
-    "mon_form": "CHARMANDER_NORMAL",
-    "mon_stamina": 15,
     "mon_attack": 15,
-    "mon_name": "CHARMANDER",
-    "mon_move_2": "FLAMETHROWER",
-    "mon_cp": 555,
-    "mon_number": 4,
-    "mon_defence": 13
+    "mon_name": "BLASTOISE",
+    "mon_move_2": "HYDRO_CANNON",
+    "mon_cp": 1039,
+    "mon_number": 9,
+    "mon_defence": 12
   },
-  "3212683519870653695": {
+  "7342167455917183831": {
     "mon_isshiny": "NO",
+    "mon_weight": 45.615379333496094,
     "mon_islucky": "NO",
-    "mon_weight": 6.42330265045166,
-    "mon_move_1": "SCRATCH_FAST",
-    "mon_height": 0.505854070186615,
+    "mon_move_1": "AIR_SLASH_FAST",
+    "mon_npc_stats": {
+      "npc_total": 46,
+      "npc_won": 43
+    },
+    "mon_move_3": "AERIAL_ACE",
+    "mon_height": 1.6114568710327148,
+    "mon_pvp_stats": {
+      "pvp_won": 0,
+      "pvp_total": 1
+    },
     "mon_gender": "FEMALE",
-    "mon_form": "CHARMANDER_NORMAL",
-    "mon_stamina": 11,
-    "mon_attack": 13,
-    "mon_name": "CHARMANDER",
-    "mon_move_2": "FLAME_CHARGE",
-    "mon_cp": 399,
-    "mon_number": 4,
-    "mon_defence": 11
-  },
-  "15681485098685622871": {
-    "mon_isshiny": "NO",
-    "mon_islucky": "NO",
-    "mon_weight": 10.276851654052734,
-    "mon_move_1": "VINE_WHIP_FAST",
-    "mon_height": 0.8204759359359741,
-    "mon_gender": "MALE",
-    "mon_form": "BULBASAUR_NORMAL",
-    "mon_stamina": 14,
+    "mon_nickname": "U8",
+    "mon_stamina": 15,
     "mon_attack": 14,
-    "mon_name": "BULBASAUR",
-    "mon_move_2": "POWER_WHIP",
-    "mon_cp": 468,
-    "mon_number": 1,
-    "mon_defence": 13
+    "mon_name": "PIDGEOT",
+    "mon_alignment": "SHADOW",
+    "mon_move_2": "FRUSTRATION",
+    "mon_cp": 2387,
+    "mon_number": 18,
+    "mon_defence": 14,
+    "mon_weather_boost": "PARTLY_CLOUDY"
   }
 };
     
@@ -3094,14 +3213,60 @@ function setupEventListeners() {
     });
     
     // Upload JSON file
-    elements.uploadJsonBtn.addEventListener('click', function() {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.json';
-        fileInput.onchange = handleFileUpload;
-        fileInput.click();
+    // elements.uploadJsonBtn.addEventListener('click', function() {
+    //     const fileInput = document.createElement('input');
+    //     fileInput.type = 'file';
+    //     fileInput.accept = '.json';
+    //     fileInput.onchange = handleFileUpload;
+    //     fileInput.click();
+    // });
+    elements.uploadJsonBtn.addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const match = file.name.match(/^Pokemons-(.+)-(\d{2}-\d{2}-\d{4})\.json$/);
+        if (!match) {
+            alert("Invalid file format. Must be: Pokemons-ACCOUNTNAME-dd-mm-yyyy.json");
+            return;
+        }
+
+        const [_, accountName, date] = match;
+        const text = await file.text();
+        const json = JSON.parse(text);
+
+        if (!uploadedFiles[accountName]) uploadedFiles[accountName] = [];
+        uploadedFiles[accountName].push({ date, data: json });
+
+        updateAccountDropdown();
+        loadPokemonData(json);  // Assuming you have a function like this
+    };
+    input.click();
+});
+function updateAccountDropdown() {
+    const dropdown = document.getElementById('accountSelector');
+    dropdown.innerHTML = '<option value="">Select Account</option>';
+
+    Object.keys(uploadedFiles).forEach(account => {
+        const option = document.createElement('option');
+        option.value = account;
+        option.textContent = account;
+        dropdown.appendChild(option);
     });
-    
+}
+document.getElementById('accountSelector').addEventListener('change', function () {
+    const accountName = this.value;
+    if (!accountName || !uploadedFiles[accountName]) return;
+
+    // For now, load the latest upload for the account
+    const latest = uploadedFiles[accountName].slice(-1)[0];
+    loadPokemonData(latest.data);
+});
+
+
     // Load sample data
     elements.loadSampleDataBtn.addEventListener('click', loadSampleData);
     
