@@ -1,4 +1,4 @@
-const typeIcons = {
+window.typeIcons = {
     BUG: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_BUG_BORDERED.png"],
     DARK: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_DARK_BORDERED.png"],
     DRAGON: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_DRAGON_BORDERED.png"],
