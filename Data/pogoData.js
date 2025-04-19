@@ -36,7 +36,11 @@ window.typingBackgrounds = {
     "PSYCHIC": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_psychic.png"],
     "ROCK": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_rock.png"],
     "STEEL": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_steel.png"],
-    "WATER": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"]
+    "WATER": ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Type%20Backgrounds/details_type_bg_water.png"],
+    UNKNOWN: "linear-gradient(90deg, #888, #aaa)",  // ← ADD THIS
+    "UNKNOWN": "linear-gradient(90deg, #888, #aaa)"  // ← ADD THIS
+
+
 };
 window.typeIcons = {
     BUG: ["https://raw.githubusercontent.com/bluecereal127/pogo_assets/master/Images/Types/POKEMON_TYPE_BUG_BORDERED.png"],
